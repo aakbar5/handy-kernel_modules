@@ -1,0 +1,26 @@
+{
+    "image": "qemu:latest",
+    "runArgs": [ 
+      "--network=host", 
+      "--cap-add=SYS_PTRACE", 
+      "--security-opt", 
+      "seccomp=unconfined"
+    ],
+    "extensions": [
+      "2gua.rainbow-brackets",
+      "adammaras.overtype",
+      "AlanWalk.markdown-toc",
+      "alefragnani.Bookmarks",
+      "alesiong.clang-tidy-linter",
+      "alphabotsec.vscode-eclipse-keybindings",
+      "austin.code-gnu-global",
+      "betwo.vscode-linux-binary-preview",
+      "bierner.emojisense",
+      "maximetinu.identical-sublime-monokai-csharp-theme-colorizer",
+      "medo64.render-crlf",
+      "mikestead.dotenv",
+      "ms-vscode.cpptools",
+      "plorefice.devicetree",
+      "vscode-icons-team.vscode-icons",
+	]
+}
