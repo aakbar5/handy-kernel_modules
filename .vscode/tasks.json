@@ -1,0 +1,118 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clear terminal",
+            "detail": "Clear terminal",
+            "type": "shell",
+            "command": "clear",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "label": "Generate compile_commands.json",
+            "detail": "compile_commands.json for code browsing...",
+            "type": "process",
+            "command": "python",
+            "options": {
+                "cwd": "${workspaceRoot}/.vscode"
+            },
+            "args": [
+                "${workspaceRoot}/.vscode/generate_compdb.py",
+                "${workspaceRoot}/",
+                "/ws/linux-5.5"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Run QEMU",
+            "detail": "Run QEMU",
+            "type": "shell",
+            "command": "/ws/run_qemu.sh",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "kmod - build",
+            "detail": "Build kernel module",
+            "type": "shell",
+            "command": "make",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "kmod - clean",
+            "detail": "Clean kernel module build files",
+            "type": "shell",
+            "command": "make",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "args": [
+                "clean"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "kmod - load",
+            "detail": "Load kernel module in qemu",
+            "type": "shell",
+            "command": "scp",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "args": [
+                "-P 2222",
+                "helloworld.ko",
+                "root@localhost:/root"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc"
+        }
+    ]
+}

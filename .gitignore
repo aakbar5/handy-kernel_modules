@@ -1,5 +1,5 @@
 venv/
-.vscode/
+#.vscode/
 TODO
 obj
 out
@@ -36,3 +36,4 @@ __pycache__
 *.symvers
 .*.*.cmd
 build-*
+.devcontainer/sources
