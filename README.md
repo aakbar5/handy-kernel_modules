@@ -1,5 +1,7 @@
 <!-- TOC -->
 
+- [Info](#info)
+- [Setup](#setup)
 - [Kernel module](#kernel-module)
     - [Simple](#simple)
     - [With parameter](#with-parameter)
@@ -31,6 +33,15 @@
 - [License](#license)
 
 <!-- /TOC -->
+
+# Info
+It contains Linux kernel modules.
+
+# Setup
+- How to do setup of workspace, follow [this](https://aakbar5.wordpress.com/2020/02/15/linux-kernel-vs-code/).
+
+![kernel_in_vscode](.devcontainer/kernel_in_vscode.gif)
+
 
 # Kernel module
 ## Simple
