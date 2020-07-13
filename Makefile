@@ -3,7 +3,8 @@ ARCH ?= arm64
 CROSS_COMPILE ?= aarch64-linux-gnu-
 PWD ?= $(shell pwd)
 
-obj-m := helloworld.o
+# obj-m := helloworld.o
+# obj-m := helloworld_probe.o
 # obj-m := helloworld_param.o
 # obj-m := proc_info.o
 

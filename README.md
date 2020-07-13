@@ -4,7 +4,8 @@
 - [Setup](#setup)
 - [Kernel module](#kernel-module)
     - [Simple](#simple)
-    - [With parameter](#with-parameter)
+    - [Parameter](#parameter)
+    - [Probe](#probe)
 - [General DS](#general-ds)
     - [container_of](#container_of)
     - [Linked list](#linked-list)
@@ -57,7 +58,7 @@ Simple kernel module
 #
 ```
 
-## With parameter
+## Parameter
 A kernel module which can accept parameters.
 - [helloworld_param.c](helloworld_param.c)
 
@@ -97,6 +98,10 @@ A kernel module which can accept parameters.
 [ 8893.424878]  - param_string # testing
 #
 ```
+
+## Probe
+A kernel module with probe and remove by having entry in DTS file.
+- [helloworld_probe.c](helloworld_probe.c)
 
 # General DS
 ## container_of
@@ -488,7 +493,7 @@ rmmod [ 9348.270767] lockmod_read_callback0  -- Doing working (5)
 
 # Character device
 ## Simple
-An example of how to create device interface using kernel kernel module.
+An example of how to create device interface using kernel module.
 - [char_device.c](char_device.c)
 
 ```
