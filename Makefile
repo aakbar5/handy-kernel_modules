@@ -21,7 +21,9 @@ PWD ?= $(shell pwd)
 
 # obj-m := char_device.o 
 # obj-m := char_device_fops.o
-# obj-m := char_device_sysfs.o
+
+# obj-m := sysfs_simple.o
+# obj-m := sysfs_dynamic.o
 
 # obj-m := timer.o
 # obj-m := timer_hr.o

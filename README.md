@@ -20,16 +20,18 @@
 - [Character device](#character-device)
     - [Simple](#simple-1)
     - [With File I/O](#with-file-io)
-    - [With Sysfs](#with-sysfs)
-- [Timer](#timer)
+- [Sysfs](#sysfs)
     - [Simple](#simple-2)
+    - [Dynamic](#dynamic)
+- [Timer](#timer)
+    - [Simple](#simple-3)
     - [hr-timer (one shot)](#hr-timer-one-shot)
     - [hr-timer (Repetitive)](#hr-timer-repetitive)
 - [Worker](#worker)
     - [Tasklet](#tasklet)
     - [Wait Queue](#wait-queue)
     - [Work queue](#work-queue)
-        - [Simple](#simple-3)
+        - [Simple](#simple-4)
         - [Delayed](#delayed)
 - [License](#license)
 
@@ -537,33 +539,67 @@ crw-------    1 root     root      235,   0 Jan 29 19:05 /dev/chdev
 #
 ```
 
-## With Sysfs
-A kernel module with sysfs interface.
-- [char_device_sysfs.c](char_device_sysfs.c)
+# Sysfs
+## Simple
+A kernel module with sysfs interface for static data.
+- [sysfs_simple.c](sysfs_simple.c)
 
 ```
-# insmod char_device_sysfs.ko
-[22321.545163] cd: init
-[22321.553631] cd: device(/dev/chdev) is create
-[22321.554598]  - Major number # 235
-[22321.554860]  - Minor number # 0
-[22321.555283] Sysfs interface # /sys/chdev/root
-# ls -l /sys/chdev/root/
+# insmod sysfs_simple.ko
+[ 2667.802727] cd: init
+[ 2667.804341] Sysfs interface # /sys/test/root
+# ls -l /sys/test/root/
 total 0
--r--r--r-- 1 root root 4096 Feb  2 03:07 readonly
--rw-r--r-- 1 root root 4096 Feb  2 03:07 readwrite
-# cat /sys/chdev/root/readonly
+-r--r--r-- 1 root root 4096 Jul 12 00:12 readonly
+-rw-r--r-- 1 root root 4096 Jul 12 00:12 readwrite
+# cat /sys/test/root/readonly
 100
-# cat /sys/chdev/root/readwrite
+# cat /sys/test/root/readwrite
 0
-# echo "10" > /sys/chdev/root/readonly
--sh: can't create /sys/chdev/root/readonly: Permission denied
-# echo "10" > /sys/chdev/root/readwrite
-[22364.447180] readwrite = 10
-# cat /sys/chdev/root/readwrite
-10
-# rmmod char_device_sysfs.ko
-[22377.447454] cd: exit
+# echo 202 > /sys/test/root/readonly
+-sh: can't create /sys/test/root/readonly: Permission denied
+# echo 202 > /sys/test/root/readwrite
+[ 2990.228589] readwrite = 202
+# cat /sys/test/root/readwrite
+202
+# rmmod sysfs_simple
+#
+```
+
+## Dynamic
+A kernel module with sysfs interface for dynamic data.
+- [sysfs_dynamic.c](sysfs_dynamic.c)
+```
+# insmod sysfs_dynamic.ko
+[ 3710.192276] cd: init
+[ 3710.194922] Sysfs interface # /sys/test/root
+# ls -l /sys/test/root/
+total 0
+-rw-r--r-- 1 root root 4096 Jul 12 00:30 idx0
+-rw-r--r-- 1 root root 4096 Jul 12 00:30 idx1
+-rw-r--r-- 1 root root 4096 Jul 12 00:30 idx2
+-rw-r--r-- 1 root root 4096 Jul 12 00:30 idx3
+# cat /sys/test/root/idx1
+1
+# echo 900 > /sys/test/root/idx1
+[ 3735.822774] store = 900
+# cat /sys/test/root/idx1
+900
+# echo 900 > /sys/test/root/idx3
+[ 3740.998096] store = 900
+# echo 400 > /sys/test/root/idx3
+[ 3756.362723] store = 400
+# cat /sys/test/root/idx0
+0
+# cat /sys/test/root/idx1
+900
+# cat /sys/test/root/idx2
+2
+# cat /sys/test/root/idx3
+400
+# rmmod sysfs_dynamic.ko
+[ 3777.702655] ms: exit
+#
 ```
 
 # Timer
