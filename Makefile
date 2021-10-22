@@ -1,10 +1,10 @@
-KERNELSRC ?= /ws/linux-5.5
+KERNELSRC ?= /ws/linux-5.10.72
 ARCH ?= arm64
-CROSS_COMPILE ?= aarch64-linux-gnu-
+CROSS_COMPILE ?= aarch64-none-linux-gnu-
 PWD ?= $(shell pwd)
 
 # obj-m := helloworld.o
-# obj-m := helloworld_probe.o
+obj-m := helloworld_probe.o
 # obj-m := helloworld_param.o
 # obj-m := proc_info.o
 

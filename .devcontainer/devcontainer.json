@@ -1,5 +1,5 @@
 {
-    "image": "qemu:latest",
+    "image": "aarch64-qemu:latest",
     "runArgs": [ 
       "--network=host", 
       "--cap-add=SYS_PTRACE", 
@@ -22,5 +22,6 @@
       "ms-vscode.cpptools",
       "plorefice.devicetree",
       "vscode-icons-team.vscode-icons",
+      "actboy168.tasks"
 	]
 }
