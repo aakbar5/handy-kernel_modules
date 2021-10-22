@@ -40,18 +40,29 @@
 # Info
 It contains Linux kernel modules.
 
+- Buildroot: `2021.08.1`
+- Kernel: `linux-5.10.72`
+- Compiler: `gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu`
+- Qemu: `v6.1.0` (`aarch64-softmmu @ cortex-a57`)
+
 # Setup
 - How to do setup of workspace, follow [this](https://aakbar5.wordpress.com/2020/02/15/linux-kernel-vs-code/).
 
 ![kernel_in_vscode](.devcontainer/kernel_in_vscode.gif)
 
+- For Docker
+```bash
+cd /path/to/repo/.devcontainer
+docker build --tag aarch64-qemu:latest .
+docker run -it aarch64-qemu:latest /bin/bash
+```
 
 # Kernel module
 ## Simple
 Simple kernel module
 - [helloworld.c](helloworld.c)
 
-```
+```bash
 # insmod helloworld.ko
 [ 8604.716927] Helloworld_module: init
 #
@@ -65,7 +76,7 @@ A kernel module which can accept parameters.
 - [helloworld_param.c](helloworld_param.c)
 
 - Insert module with no parameter
-```
+```bash
 #
 # insmod helloworld_param.ko
 [ 8773.412883] Helloworld_module: init
@@ -84,7 +95,7 @@ A kernel module which can accept parameters.
 ```
 
 - Insert module with user defined parameter
-```
+```bash
 # insmod helloworld_param.ko param_integer=600 param_string="testing" param_array=1,2,3
 [ 8869.944889] Helloworld_module: init
 [ 8869.945650] Helloworld_parameters:
@@ -110,7 +121,7 @@ A kernel module with probe and remove by having entry in DTS file.
 An example of how to use `container_of`.
 - [container_of.c](container_of.c)
 
-```
+```bash
 # modinfo container_of.ko
 filename:       /root/container_of.ko
 author:         aakbar5 <16612387+aakbar5@users.noreply.github.com>
@@ -125,7 +136,7 @@ parm:           param_count:Number of groups to be created -- (Read only) (int)
 parm:           param_idx:Index of the group to be shown -- (Read/write only) (int)
 ```
 
-```
+```bash
 # insmod container_of.ko
 [11503.238689] co: init
 [11503.240342] Group @ index based
@@ -146,7 +157,7 @@ parm:           param_idx:Index of the group to be shown -- (Read/write only) (i
 #
 ```
 
-```
+```bash
 # insmod container_of.ko param_idx=2
 [   46.364041] container_of: loading out-of-tree module taints kernel.
 [   46.397061] co: init
@@ -168,7 +179,7 @@ parm:           param_idx:Index of the group to be shown -- (Read/write only) (i
 An example of how to kernel linked list interface.
 - [linked_list.c](linked_list.c)
 
-```
+```bash
 # insmod linked_list.ko
 [  796.369350] ll: init
 [  796.370399] Add nodes to the list...
@@ -192,8 +203,7 @@ An example of how to kernel linked list interface.
 An example of usage of `for_each_process`.
 - [proc_info.c](proc_info.c)
 
-```
-#
+```bash
 # insmod proc_info.ko
 [37227.566385] proinfo_module: init
 [37227.575743]  PID                 NAME                STATE       TIME
@@ -293,7 +303,7 @@ An example of usage of `for_each_process`.
 An example of how to use kthread.
 - [kthread_simple.c](kthread_simple.c)
 
-```
+```bash
 # insmod kthread_simple.ko
 [ 9474.072607] kt: init
 [ 9474.073518] Setup kthread...
@@ -315,8 +325,8 @@ mmod [ 9480.146799] kt_callback -- Doing working (4297262065)
 An example of kthread which can put in different states using device interface.
 - [kthread_advanced.c](kthread_advanced.c)
 
-```
-# insmod kthread_advanced.ko.ko
+```bash
+# insmod kthread_advanced.ko
 [ 6135.380992] cd: init
 [ 6135.390749] Setup kthread...
 [ 6135.394460] Start kthread...
@@ -356,7 +366,7 @@ An example of kthread which can put in different states using device interface.
 #
 ```
 
-```
+```bash
 # echo "1" > /dev/chdev
 # echo "4" > /dev/chdev
 # echo "4" > /dev/chdev
@@ -369,7 +379,7 @@ An example of kthread which can put in different states using device interface.
 An example of how to use mutex.
 - [lock_mutex.c](lock_mutex.c)
 
-```
+```bash
 # insmod lock_mutex.ko
 [ 7179.267261] lockmod: init
 [ 7179.268022] Setup mutex...
@@ -396,7 +406,7 @@ rmmod [ 7185.613442] lockmod_read_callback  -- Doing working (2)
 An example of how to use spin lock.
 - [lock_spin_lock.c](lock_spin_lock.c)
 
-```
+```bash
 # insmod lock_spin_lock.ko
 [ 7463.213732] lockmod: init
 [ 7463.214213] Setup spin lock...
@@ -427,7 +437,7 @@ rmmod [ 7479.408382] lockmod_read_callback  -- Doing working (16)
 An example of how to use semaphore.
 - [lock_semaphore.c](lock_semaphore.c)
 
-```
+```bash
 # insmod lock_semaphore.ko
 [ 8589.386225] lockmod: init
 [ 8589.386982] Setup mutex...
@@ -458,7 +468,7 @@ rmmod [ 8610.733015] lockmod_read_callback  -- Doing working (7)
 An example of how to use rw-semaphore.
 - [lock_rw_semaphore.c](lock_rw_semaphore.c)
 
-```
+```bash
 # insmod lock_rw_semaphore.ko
 [ 9332.805410] lockmod: init
 [ 9332.806475] Setup rw-semaphore...
@@ -498,7 +508,7 @@ rmmod [ 9348.270767] lockmod_read_callback0  -- Doing working (5)
 An example of how to create device interface using kernel module.
 - [char_device.c](char_device.c)
 
-```
+```bash
 # insmod char_device.ko
 [10284.207744] cd: init
 [10284.217666] cd: device(/dev/chdev) is create
@@ -517,7 +527,7 @@ console          cpu_dma_latency
 A character device with FILE I/O support.
 - [char_device_fops.c](char_device_fops.c)
 
-```
+```bash
 # insmod char_device_fops.ko
 [10396.352119] cd: init
 [10396.363753] cd: device(/dev/chdev) is create
@@ -544,7 +554,7 @@ crw-------    1 root     root      235,   0 Jan 29 19:05 /dev/chdev
 A kernel module with sysfs interface for static data.
 - [sysfs_simple.c](sysfs_simple.c)
 
-```
+```bash
 # insmod sysfs_simple.ko
 [ 2667.802727] cd: init
 [ 2667.804341] Sysfs interface # /sys/test/root
@@ -569,7 +579,8 @@ total 0
 ## Dynamic
 A kernel module with sysfs interface for dynamic data.
 - [sysfs_dynamic.c](sysfs_dynamic.c)
-```
+
+```bash
 # insmod sysfs_dynamic.ko
 [ 3710.192276] cd: init
 [ 3710.194922] Sysfs interface # /sys/test/root
@@ -607,7 +618,7 @@ total 0
 An example how to use timer.
 - [timer.c](timer.c)
 
-```
+```bash
 # insmod timer.ko
 [10872.794497] trmod: init
 [10872.794922] Setup timer...
@@ -626,7 +637,7 @@ An example how to use timer.
 An example how to use higher resolution timer.
 - [timer_hr.c](timer_hr.c)
 
-```
+```bash
 # insmod timer_hr.ko
 [11207.958620] hr: init
 [11207.959071] Setup timer...
@@ -644,7 +655,7 @@ An example how to use higher resolution timer.
 An example how to use higher resolution timer in repetitive mode.
 - [timer_hr_repetitive.c](timer_hr_repetitive.c)
 
-```
+```bash
 # insmod timer_hr_repetitive.ko
 [ 7170.911353] hr: init
 [ 7170.911731] Setup timer...
@@ -687,7 +698,7 @@ An example how to use higher resolution timer in repetitive mode.
 An example of how to use tasklet.
 - [tasklet.c](tasklet.c)
 
-```
+```bash
 # insmod tasklet.ko
 [11354.444642] tl: init
 [11354.445198] tl_tasklet_func: Tasklet data
@@ -700,7 +711,7 @@ An example of how to use tasklet.
 An example of how to use wait queue.
 - [wait_queue.c](wait_queue.c)
 
-```
+```bash
 # insmod wait_queue.ko
 [ 9391.472501] wq: init
 [ 9391.473955] Create work to be done...
@@ -722,7 +733,7 @@ An example of how to use wait queue.
 An example of how to use work queue.
 - [work_queue_simple.c](work_queue_simple.c)
 
-```
+```bash
 # insmod work_queue_simple.ko
 [16189.731808] wq: init
 [16189.732197] Create work queue...
@@ -741,7 +752,7 @@ An example of how to use work queue.
 An example of how to use work queue with delayed functionality.
 - [work_queue_delayed.c](work_queue_delayed.c)
 
-```
+```bash
 # insmod work_queue_delayed.ko
 [ 6649.250160] wq: init
 [ 6649.250957] Create work queue...
