@@ -4,17 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/ws/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin/../lib/gcc/aarch64-linux-gnu/7.5.0/include",
-                "/ws/linux-5.5/arch/arm64/include",
-                "/ws/linux-5.5/arch/arm64/include/generated",
-                "/ws/linux-5.5/include",
-                "/ws/linux-5.5/include/**",
-                "/ws/linux-5.5/arch/arm64/include/uapi",
-                "/ws/linux-5.5/arch/arm64/include/generated/uapi",
-                "/ws/linux-5.5/include/uapi",
-                "/ws/linux-5.5/include/generated/uapi",
-                "/ws/linux-5.5/include/linux/kconfig.h",
-                "/ws/linux-5.5/include/linux/compiler_types.h"
+                "/ws/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/lib/gcc/aarch64-none-linux-gnu/10.3.1/include",
+                "/ws/linux-5.10.72/arch/arm64/include/**",
+                "/ws/linux-5.10.72/include/**"
             ],
             "defines": [
                 "__GNUC__",
@@ -23,9 +15,17 @@
                 "KBUILD_BASENAME='\"xor_neon.mod\"'",
                 "KBUILD_MODNAME='\"xor_neon\"'"
             ],
+            "compilerPath": "/ws/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-gcc",
             "cStandard": "c11",
-            "intelliSenseMode": "clang-x64",
-            "compileCommands": "${workspaceFolder}/.vscode/compile_commands.json"
+            "intelliSenseMode": "linux-gcc-arm64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**",
+                    "/ws/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/lib/gcc/aarch64-none-linux-gnu/10.3.1/include",
+                    "/ws/linux-5.10.72/arch/arm64/include/**",
+                    "/ws/linux-5.10.72/include/**"
+                ]
+            }
         }
     ],
     "version": 4
