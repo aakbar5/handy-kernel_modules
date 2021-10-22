@@ -1,4 +1,5 @@
 // An example of timer
+// A simple one shot timer
 
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -14,14 +15,11 @@ struct trmod_info {
 } *g_trmod_info;
 
 // Callback to perform work
-static void trmod_timer_callback(struct timer_list *timer) {
+static void timer_callback(struct timer_list *timer) {
     struct trmod_info *info = container_of(timer, struct trmod_info, trmod_timer);
 
-    pr_info("trmod_timer_callback -- START\n");
+    pr_info("trmod: timer_callback -- called (one-shot)\n");
 
-    pr_info("trmod_timer_callback -- Doing working\n");
-
-    pr_info("trmod_timer_callback -- END\n");
     (void)info;
 }
 
@@ -37,10 +35,10 @@ static int __init trmod_init(void) {
         return -ENOMEM;
     }
 
-    pr_info("Setup timer...\n");
-    timer_setup(&g_trmod_info->trmod_timer, trmod_timer_callback, 0);
+    pr_info("trmod: Setup timer...\n");
+    timer_setup(&g_trmod_info->trmod_timer, timer_callback, 0);
 
-    pr_info("Setup timeout...\n");
+    pr_info("trmod: Setup timeout...\n");
     mod_timer(&g_trmod_info->trmod_timer, jiffies + msecs_to_jiffies(250));
 
     return 0;
@@ -55,7 +53,7 @@ static void __exit trmod_exit(void) {
     if (!g_trmod_info)
         return;
 
-    pr_info("Delete timer...\n");
+    pr_info("trmod: Delete timer...\n");
     del_timer_sync(&g_trmod_info->trmod_timer);
     kfree(g_trmod_info);
     g_trmod_info = NULL;
