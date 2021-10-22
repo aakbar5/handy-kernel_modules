@@ -1,37 +1,41 @@
 // An example of wait_queue
+// A recurring timer is called which  sets
+// the wait_queue condition after sometimes.
+// Once wait_queue is signalled, delete the
+// timer.
 
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/delay.h>
-#include <linux/workqueue.h>
+#include <linux/timer.h>
 
 // Sleep time (mseconds)
-static const unsigned long sleep_time = 1000 * 10;
+static const unsigned long sleep_time = 1000;
 
 // Structure having module related data
-struct lockmod_info {
-    int condition; /* Condition */
-    struct work_struct work; /* Worker */
-    struct wait_queue_head work_queue; /* Work queue */
+struct wq_info {
+    int timer_count;
+    int condition;
+    struct timer_list timer;
+    struct wait_queue_head wait_queue;
 
-} *g_lockmod_info;
+} *g_wq_info;
 
 // Callback to perform work
-static void wq_work_handler(struct work_struct *work) {
-    struct lockmod_info *info = container_of(work, struct lockmod_info, work);
+static void timer_callback(struct timer_list *timer) {
+    struct wq_info *info = container_of(timer, struct wq_info, timer);
 
-    pr_info("wq_work_handler -- START\n");
+    pr_info("wq: timer_callback -- called (timer_count: %d)\n", info->timer_count);
+    info->timer_count += 1;
+    if (info->timer_count > 10) {
+        info->condition += 1;
+        wake_up_interruptible_all(&info->wait_queue);
+    }
 
-    pr_info("wq_work_handler -- Doing working\n");
-    msleep(sleep_time);
-
-    pr_info("wq_work_handler -- Work is done\n");
-    info->condition = 1;
-
-    pr_info("wq_work_handler -- END\n");
-    wake_up_interruptible_all(&info->work_queue);
+    /* Re-enable timer */
+    mod_timer(&info->timer, jiffies + msecs_to_jiffies(sleep_time * 2));
 }
 
 //
@@ -40,34 +44,35 @@ static void wq_work_handler(struct work_struct *work) {
 static int __init wq_init(void) {
     pr_info("wq: init\n");
 
-    g_lockmod_info = kmalloc(sizeof(struct lockmod_info), GFP_KERNEL);
-    if (!g_lockmod_info) {
+    g_wq_info = kmalloc(sizeof(struct wq_info), GFP_KERNEL);
+    if (!g_wq_info) {
         pr_err("Fail to allocate memory\n");
         return -ENOMEM;
     }
 
-    g_lockmod_info->condition = 0;
-    init_waitqueue_head(&g_lockmod_info->work_queue);
+    g_wq_info->timer_count = 0;
+    g_wq_info->condition = 0;
 
-    // Initialize work
-    pr_info("Create work to be done...\n");
+    pr_info("wq: Init wait_queue...\n");
+    init_waitqueue_head(&g_wq_info->wait_queue);
+
+    pr_info("wq: Setup timer...\n");
+    timer_setup(&g_wq_info->timer, timer_callback, 0);
+
+    pr_info("wq: Setup timeout...\n");
+    mod_timer(&g_wq_info->timer, jiffies + msecs_to_jiffies(sleep_time));
+
+    pr_info("wq: Going to suspend until is not done...\n");
     {
-        INIT_WORK(&g_lockmod_info->work, wq_work_handler);
+        wait_event_interruptible(g_wq_info->wait_queue, g_wq_info->condition != 0);
+
+        pr_info("wq: wait_queue is signalled...\n");
+
+        pr_info("wq: delete timer...\n");
+        del_timer(&g_wq_info->timer);
     }
 
-    // Schedule work
-    pr_info("Create work to be done...\n");
-    {
-        schedule_work(&g_lockmod_info->work);
-    }
-
-    pr_info("Going to suspend until is not done...\n");
-    {
-        wait_event_interruptible(g_lockmod_info->work_queue, g_lockmod_info->condition != 0);
-    }
-
-    pr_info("Wow! work is complete...\n");
-    pr_info("wq: Bye!\n");
+    pr_info("wq: init -- done\n");
 
     return 0;
 }
@@ -78,11 +83,11 @@ static int __init wq_init(void) {
 static void __exit wq_exit(void) {
     pr_info("wq: exit\n");
 
-    if (!g_lockmod_info)
+    if (!g_wq_info)
         return;
 
-    kfree(g_lockmod_info);
-    g_lockmod_info = NULL;
+    kfree(g_wq_info);
+    g_wq_info = NULL;
 }
 
 //

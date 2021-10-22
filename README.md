@@ -713,18 +713,28 @@ An example of how to use wait queue.
 
 ```bash
 # insmod wait_queue.ko
-[ 9391.472501] wq: init
-[ 9391.473955] Create work to be done...
-[ 9391.475053] Create work to be done...
-[ 9391.475763] wq_work_handler -- START
-[ 9391.476074] wq_work_handler -- Doing working
-[ 9391.476546] Going to suspend until is not done...
-[ 9401.613610] wq_work_handler -- Work is done
-[ 9401.616389] wq_work_handler -- END
-[ 9401.617546] Wow! work is complete...
-[ 9401.617838] wq: Bye!
-# rmmod wait_queue.ko
-[ 9405.778917] wq: exit
+[ 5362.443697] wq: init
+[ 5362.444390] wq: Init wait_queue...
+[ 5362.444798] wq: Setup timer...
+[ 5362.445315] wq: Setup timeout...
+[ 5362.446713] wq: Going to suspend until is not done...
+[ 5363.471108] wq: timer_callback -- called (timer_count: 0)
+[ 5365.486979] wq: timer_callback -- called (timer_count: 1)
+[ 5367.503002] wq: timer_callback -- called (timer_count: 2)
+[ 5369.518849] wq: timer_callback -- called (timer_count: 3)
+[ 5371.534861] wq: timer_callback -- called (timer_count: 4)
+[ 5373.550821] wq: timer_callback -- called (timer_count: 5)
+[ 5375.566743] wq: timer_callback -- called (timer_count: 6)
+[ 5377.582716] wq: timer_callback -- called (timer_count: 7)
+[ 5379.598723] wq: timer_callback -- called (timer_count: 8)
+[ 5381.615089] wq: timer_callback -- called (timer_count: 9)
+[ 5383.630669] wq: timer_callback -- called (timer_count: 10)
+[ 5383.635371] wq: wait_queue is signalled...
+[ 5383.637153] wq: delete timer...
+[ 5383.639541] wq: init -- done
+# rmmod wait_queue
+[ 5393.416361] wq: exit
+#
 ```
 
 
@@ -768,5 +778,6 @@ An example of how to use work queue with delayed functionality.
 [ 6680.596487] wq: exit
 #
 ```
+
 # License
 [MIT](LICENSE)
