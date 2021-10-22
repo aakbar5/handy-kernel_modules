@@ -4,7 +4,7 @@ CROSS_COMPILE ?= aarch64-none-linux-gnu-
 PWD ?= $(shell pwd)
 
 # obj-m := helloworld.o
-obj-m := helloworld_probe.o
+# obj-m := helloworld_probe.o
 # obj-m := helloworld_param.o
 # obj-m := proc_info.o
 
@@ -26,6 +26,7 @@ obj-m := helloworld_probe.o
 # obj-m := sysfs_dynamic.o
 
 # obj-m := timer.o
+obj-m := timer_repetitive.o
 # obj-m := timer_hr.o
 # obj-m := timer_hr_repetitive.o
 

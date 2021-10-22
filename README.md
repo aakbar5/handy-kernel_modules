@@ -24,14 +24,15 @@
     - [Simple](#simple-2)
     - [Dynamic](#dynamic)
 - [Timer](#timer)
-    - [Simple](#simple-3)
+    - [Simple timer (one shot)](#simple-timer-one-shot)
+    - [Simple timer (Repetitive)](#simple-timer-repetitive)
     - [hr-timer (one shot)](#hr-timer-one-shot)
     - [hr-timer (Repetitive)](#hr-timer-repetitive)
 - [Worker](#worker)
     - [Tasklet](#tasklet)
     - [Wait Queue](#wait-queue)
     - [Work queue](#work-queue)
-        - [Simple](#simple-4)
+        - [Simple](#simple-3)
         - [Delayed](#delayed)
 - [License](#license)
 
@@ -614,22 +615,49 @@ total 0
 ```
 
 # Timer
-## Simple
+## Simple timer (one shot)
 An example how to use timer.
 - [timer.c](timer.c)
 
 ```bash
 # insmod timer.ko
-[10872.794497] trmod: init
-[10872.794922] Setup timer...
-[10872.795101] Setup timeout...
-# [10873.059272] trmod_timer_callback -- START
-[10873.062645] trmod_timer_callback -- Doing working
-[10873.064049] trmod_timer_callback -- END
-
+[ 6014.610336] trmod: init
+[ 6014.611195] trmod: Setup timer...
+[ 6014.611674] trmod: Setup timeout...
+# [ 6014.894695] trmod: timer_callback -- called (one-shot)
+#
+#
 # rmmod timer.ko
-[10881.401745] trmod: exit
-[10881.402717] Delete timer...
+[ 6025.484102] trmod: exit
+[ 6025.484559] trmod: Delete timer...
+#
+```
+
+## Simple timer (Repetitive)
+An example how to use timer with repetitive timeout.
+- [timer_repetitive.c](timer_repetitive.c)
+
+```bash
+# insmod timer_repetitive.ko
+[ 7442.674073] trmod: init
+[ 7442.674718] trmod: Setup timer...
+[ 7442.675151] trmod: Setup timeout...
+[ 7443.214988] trmod: timer_callback -- called (repetitive)
+[ 7443.470832] trmod: timer_callback -- called (repetitive)
+[ 7443.726624] trmod: timer_callback -- called (repetitive)
+[ 7443.982685] trmod: timer_callback -- called (repetitive)
+[ 7444.238788] trmod: timer_callback -- called (repetitive)
+[ 7444.495042] trmod: timer_callback -- called (repetitive)
+[ 7444.750681] trmod: timer_callback -- called (repetitive)
+[ 7445.006556] trmod: timer_callback -- called (repetitive)
+[ 7445.262778] trmod: timer_callback -- called (repetitive)
+[ 7445.518715] trmod: timer_callback -- called (repetitive)
+[ 7445.774355] trmod: timer_callback -- called (repetitive)
+[ 7446.030846] trmod: timer_callback -- called (repetitive)
+[ 7446.286816] trmod: timer_callback -- called (repetitive)
+# rmmod timer_repetitive.ko
+[ 7455.101628] trmod: exit
+[ 7455.102999] trmod: Delete timer...
 #
 ```
 

@@ -1,5 +1,5 @@
 // An example of timer
-// A simple one shot timer
+// A repetitive timer
 
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -18,9 +18,10 @@ struct trmod_info {
 static void timer_callback(struct timer_list *timer) {
     struct trmod_info *info = container_of(timer, struct trmod_info, trmod_timer);
 
-    pr_info("trmod: timer_callback -- called (one-shot)\n");
+    pr_info("trmod: timer_callback -- called (repetitive)\n");
 
-    (void)info;
+    // Reenable timer
+    mod_timer(&info->trmod_timer, jiffies + msecs_to_jiffies(250));
 }
 
 //
@@ -54,7 +55,7 @@ static void __exit trmod_exit(void) {
         return;
 
     pr_info("trmod: Delete timer...\n");
-    del_timer_sync(&g_trmod_info->trmod_timer);
+    del_timer(&g_trmod_info->trmod_timer);
     kfree(g_trmod_info);
     g_trmod_info = NULL;
 }
