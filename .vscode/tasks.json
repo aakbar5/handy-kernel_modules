@@ -17,17 +17,44 @@
             }
         },
         {
-            "label": "Generate compile_commands.json",
-            "detail": "compile_commands.json for code browsing...",
+            "label": "Generate kernel compile_commands.json",
+            "detail": "Generate compile_commands.json for kernel",
             "type": "process",
             "command": "python",
             "options": {
-                "cwd": "${workspaceRoot}/.vscode"
+                "statusbar": {
+                    "hide": true
+                },
+                "cwd": "/ws/linux-5.10.72"
             },
             "args": [
+                "/ws/linux-5.10.72/scripts/clang-tools/gen_compile_commands.py",
+                "-d",
+                "/ws/linux-5.10.72",
+                "-o",
+                "${workspaceRoot}/.vscode/compile_commands.json",
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate project compile_commands.json",
+            "detail": "Generate compile_commands.json for project",
+            "type": "process",
+            "command": "python",
+            "options": {
+                "statusbar": {
+                    "hide": true
+                },
+                "cwd": "${workspaceRoot}"
+            },
+            "dependsOn": [
+                "Generate kernel compile_commands.json"
+            ],
+            "args": [
                 "${workspaceRoot}/.vscode/generate_compdb.py",
-                "${workspaceRoot}/",
-                "/ws/linux-5.5"
+                "-o",
+                "${workspaceRoot}/.vscode",
+                "-a",
             ],
             "problemMatcher": []
         },
@@ -35,7 +62,12 @@
             "label": "Run QEMU",
             "detail": "Run QEMU",
             "type": "shell",
-            "command": "/ws/run_qemu.sh",
+            "command": "/ws/qemu/run_qemu.sh",
+            "options": {
+                "statusbar": {
+                    "label": "$(briefcase) Run Qemu"
+                }
+            },
             "presentation": {
                 "echo": false,
                 "reveal": "always",
@@ -51,7 +83,10 @@
             "type": "shell",
             "command": "make",
             "options": {
-                "cwd": "${workspaceRoot}"
+                "cwd": "${workspaceRoot}",
+                "statusbar": {
+                    "label": "$(debug-stackframe) kmod build"
+                }
             },
             "args": [],
             "group": {
@@ -72,7 +107,10 @@
             "type": "shell",
             "command": "make",
             "options": {
-                "cwd": "${workspaceRoot}"
+                "cwd": "${workspaceRoot}",
+                "statusbar": {
+                    "label": "$(discard) kmod clean"
+                }
             },
             "args": [
                 "clean"
@@ -95,7 +133,10 @@
             "type": "shell",
             "command": "scp",
             "options": {
-                "cwd": "${workspaceRoot}"
+                "cwd": "${workspaceRoot}",
+                "statusbar": {
+                    "label": "$(desktop-download) kmod load"
+                }
             },
             "args": [
                 "-P 2222",

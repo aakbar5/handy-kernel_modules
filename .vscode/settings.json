@@ -1,4 +1,18 @@
 {
+    "taskButtons.buttons": [
+        {
+            "task": "Run QEMU",
+            "buttonLabel": "Run QEMU"
+        },
+        {
+            "task": "kmod - build",
+            "buttonLabel": "kbuild"
+        },
+        {
+            "task": "kmod - load",
+            "buttonLabel": "kload"
+        }
+    ],
     "files.exclude": {
         "**/.*.*.cmd": true,
         "**/.*.d": true,
@@ -112,5 +126,6 @@
         "irqflags.h": "c",
         "fs.h": "c",
         "delay.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
