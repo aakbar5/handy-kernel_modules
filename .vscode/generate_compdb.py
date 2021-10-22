@@ -12,7 +12,7 @@ import multiprocessing
 import os
 import re
 import sys
-
+import argparse
 
 CMD_VAR_RE = re.compile(r'^\s*cmd_(\S+)\s*:=\s*(.+)\s*$', re.MULTILINE)
 SOURCE_VAR_RE = re.compile(r'^\s*source_(\S+)\s*:=\s*(.+)\s*$', re.MULTILINE)
@@ -39,11 +39,13 @@ def parse_cmd_file(cmdfile_path):
         } for o_file_name, source in sources.items()]
 
 
-def main(list_of_dirs):
+def main(list_of_dirs, output_file, append):
     print("Building *.o.cmd file list...", file=sys.stderr)
 
     compdb = []
-    for curr_dir in list_of_dirs:
+    for curr_dirr in list_of_dirs:
+        curr_dir = str(curr_dirr)
+
         global directory
         directory = curr_dir
         print("\nDir # {}\r".format(directory), file=sys.stderr)
@@ -58,7 +60,7 @@ def main(list_of_dirs):
         else:
             n_processed = 0
             print_progress_bar(0)
-        
+
             pool = multiprocessing.Pool()
             try:
                 for compdb_chunk in pool.imap_unordered(parse_cmd_file, cmd_files, chunksize=int(math.sqrt(len(cmd_files)))):
@@ -71,16 +73,36 @@ def main(list_of_dirs):
                 pool.join()
 
     print(file=sys.stderr)
-    print("\nWriting compile_commands.json...", file=sys.stderr)
-    with open('compile_commands.json', 'w') as compdb_file:
+
+    print("\nWriting {}...".format(output_file), file=sys.stderr)
+
+    mode = 'w'
+    if os.path.isfile(output_file):
+        if append:
+            with open(output_file) as f:
+                old_json = json.load(f)
+                compdb.extend(old_json)
+
+
+    with open(output_file, mode) as compdb_file:
         json.dump(compdb, compdb_file, indent=1)
 
 
 if __name__ == '__main__':
 
-    if len(sys.argv) > 1:
-        list_of_dirs = sys.argv[1:]
-    else:
-        list_of_dirs = [os.path.abspath(os.getcwd())]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', action='append', nargs='+', help="Directory to be included")
+    parser.add_argument('-o', type=str, help="Path to directory to have compile_commands.json")
+    parser.add_argument('-a', action="store_true", default=True, help="Append the existing file")
+    args = parser.parse_args()
 
-    main(list_of_dirs)
+    if args.i is None:
+        list_of_dirs = [os.path.abspath(os.getcwd())]
+    else:
+        list_of_dirs = args.i
+
+    output_file = 'compile_commands.json'
+    if args.o is not None:
+        output_file = os.path.join(args.o, output_file)
+
+    main(list_of_dirs, output_file, args.a)
