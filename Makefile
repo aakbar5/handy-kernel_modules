@@ -11,15 +11,15 @@ PWD ?= $(shell pwd)
 # obj-m := container_of.o
 # obj-m := linked_list.o
 
-# obj-m := kthread_simple.o 
-# obj-m := kthread_advanced.o 
+# obj-m := kthread_simple.o
+# obj-m := kthread_advanced.o
 
 # obj-m := lock_mutex.o
 # obj-m := lock_spin_lock.o
 # obj-m := lock_semaphore.o
 # obj-m := lock_rw_semaphore.o
 
-# obj-m := char_device.o 
+# obj-m := char_device.o
 # obj-m := char_device_fops.o
 
 # obj-m := sysfs_simple.o

@@ -13,7 +13,7 @@ struct kt_info {
     struct task_struct *task;
     unsigned int msecs;
 
-} *g_lockmod_info;
+} *g_kt_info;
 
 // Callback to perform work in the context of kthread
 static int kt_callback(void *data) {
@@ -38,32 +38,32 @@ static int __init kt_init(void) {
     
     pr_info("kt: init\n");
 
-    g_lockmod_info = kmalloc(sizeof(struct kt_info), GFP_KERNEL);
-    if (!g_lockmod_info) {
+    g_kt_info = kmalloc(sizeof(struct kt_info), GFP_KERNEL);
+    if (!g_kt_info) {
         pr_err("Fail to allocate memory\n");
         return -ENOMEM;
     }
 
-    g_lockmod_info->msecs = 1000 * 2;
+    g_kt_info->msecs = 1000 * 2;
 
     pr_info("Setup kthread...\n");
-    g_lockmod_info->task = kthread_create(kt_callback, g_lockmod_info, "kt_thread");
-    if (IS_ERR(g_lockmod_info->task)) {
+    g_kt_info->task = kthread_create(kt_callback, g_kt_info, "kt_thread");
+    if (IS_ERR(g_kt_info->task)) {
         pr_err("Fail to create kthread\n");
-        ret = PTR_ERR(g_lockmod_info->task);
+        ret = PTR_ERR(g_kt_info->task);
         goto err_free_mem;
     }
 
     // Above created kthread is not running yet
     pr_info("Start kthread...\n");
-    ret = wake_up_process(g_lockmod_info->task);
+    ret = wake_up_process(g_kt_info->task);
     pr_err(" - Task: # %d\n", ret); // 1 means kthread is started; 0 means already running
 
     return 0;
 
 err_free_mem:
-    kfree(g_lockmod_info);
-    g_lockmod_info = NULL;
+    kfree(g_kt_info);
+    g_kt_info = NULL;
     return ret;    
 }
 
@@ -73,12 +73,12 @@ err_free_mem:
 static void __exit kt_exit(void) {
     pr_info("kt: exit\n");
 
-    if (!g_lockmod_info)
+    if (!g_kt_info)
         return;
 
-    kthread_stop(g_lockmod_info->task);
-    kfree(g_lockmod_info);
-    g_lockmod_info = NULL;
+    kthread_stop(g_kt_info->task);
+    kfree(g_kt_info);
+    g_kt_info = NULL;
 }
 
 //

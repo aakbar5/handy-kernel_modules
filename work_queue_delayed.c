@@ -11,16 +11,16 @@
 static const unsigned long sleep_time = 1000 * 10;
 
 // Structure having module related data
-struct lockmod_info {
+struct mod_info {
     struct delayed_work work; /* Worker */
     struct workqueue_struct *work_queue; /* Work queue */
 
-} *g_lockmod_info;
+} *g_mod_info;
 
 // Callback to perform work
 static void wq_work_handler(struct work_struct *swork) {
     struct delayed_work *work = to_delayed_work(swork);
-    struct lockmod_info *info = container_of(work, struct lockmod_info, work);
+    struct mod_info *info = container_of(work, struct mod_info, work);
 
     pr_info("wq_work_handler -- START [%llu jiffies]\n", jiffies_64);
 
@@ -39,18 +39,18 @@ static int __init wq_init(void) {
 
     pr_info("wq: init\n");
 
-    g_lockmod_info = kmalloc(sizeof(struct lockmod_info), GFP_KERNEL);
-    if (!g_lockmod_info) {
+    g_mod_info = kmalloc(sizeof(struct mod_info), GFP_KERNEL);
+    if (!g_mod_info) {
         pr_err("Fail to allocate memory\n");
         return -ENOMEM;
     }
 
     // Create work queue
     pr_info("Create work queue...\n");
-    g_lockmod_info->work_queue = create_workqueue("wq_test");
-    if (IS_ERR(g_lockmod_info->work_queue)) {
+    g_mod_info->work_queue = create_workqueue("wq_test");
+    if (IS_ERR(g_mod_info->work_queue)) {
         pr_err("Fail to create work queue\n");
-        ret = PTR_ERR(g_lockmod_info->work_queue);
+        ret = PTR_ERR(g_mod_info->work_queue);
         goto err_free_mem;
     }
 
@@ -64,7 +64,7 @@ static int __init wq_init(void) {
     // Initialize work
     pr_info("Create work to be done...\n");
     {
-        INIT_DELAYED_WORK(&g_lockmod_info->work, wq_work_handler);
+        INIT_DELAYED_WORK(&g_mod_info->work, wq_work_handler);
     }
 
     // Queue up a work
@@ -72,7 +72,7 @@ static int __init wq_init(void) {
     {
         unsigned long delay = msecs_to_jiffies(sleep_time);
         pr_info("Current time: %llu jiffies\n", jiffies_64);
-        queue_delayed_work(g_lockmod_info->work_queue, &g_lockmod_info->work, delay);
+        queue_delayed_work(g_mod_info->work_queue, &g_mod_info->work, delay);
     }
 
     pr_info("wq: init -- end\n");
@@ -80,8 +80,8 @@ static int __init wq_init(void) {
     return 0;
 
 err_free_mem:
-    kfree(g_lockmod_info);
-    g_lockmod_info = NULL;
+    kfree(g_mod_info);
+    g_mod_info = NULL;
     return ret;
 }
 
@@ -91,16 +91,16 @@ err_free_mem:
 static void __exit wq_exit(void) {
     pr_info("wq: exit\n");
 
-    if (!g_lockmod_info)
+    if (!g_mod_info)
         return;
 
     // Cancel the work.
     // NOTE: flush_work can also be used here to force the execution of work.
-    cancel_delayed_work_sync(&g_lockmod_info->work);
-    destroy_workqueue(g_lockmod_info->work_queue);
+    cancel_delayed_work_sync(&g_mod_info->work);
+    destroy_workqueue(g_mod_info->work_queue);
 
-    kfree(g_lockmod_info);
-    g_lockmod_info = NULL;
+    kfree(g_mod_info);
+    g_mod_info = NULL;
 }
 
 //
