@@ -306,20 +306,29 @@ An example of how to use kthread.
 
 ```bash
 # insmod kthread_simple.ko
-[ 9474.072607] kt: init
-[ 9474.073518] Setup kthread...
-[ 9474.076664] Start kthread...
-[ 9474.077022]  - Task: # 1
-[ 9474.082249] kt_callback -- START
-[ 9474.082694] kt_callback -- Doing working (4297260549)
-# [ 9476.111992] kt_callback -- Doing working (4297261056)
-r[ 9478.128113] kt_callback -- Doing working (4297261560)
-mmod [ 9480.146799] kt_callback -- Doing working (4297262065)
-# rmmod kthread_[ 9482.157011] kt_callback -- Doing working (4297262568)
-# rmmod kthread_simple.ko
-[ 9483.283668] kt: exit
-[ 9484.175665] kt_callback -- END
-#
+[  110.613839] kthread_simple: loading out-of-tree module taints kernel.
+[  110.638790] kt: init
+[  110.639656] Setup kthread...
+[  110.645811] Start kthread...
+[  110.646479]  - Task: # 1
+[  110.646914] kt_callback -- START
+[  110.647541] kt_callback -- Doing working (4294919881)
+[  114.675702] kt_callback -- Doing working (4294920888)
+[  116.691169] kt_callback -- Doing working (4294921392)
+[  118.706855] kt_callback -- Doing working (4294921896)
+[  120.722338] kt_callback -- Doing working (4294922400)
+[  122.739178] kt_callback -- Doing working (4294922904)
+[  124.755093] kt_callback -- Doing working (4294923408)
+[  126.770213] kt_callback -- Doing working (4294923912)
+[  128.787190] kt_callback -- Doing working (4294924416)
+[  130.802212] kt_callback -- Doing working (4294924920)
+[  132.819519] kt_callback -- Doing working (4294925424)
+[  134.834881] kt_callback -- Doing working (4294925928)
+[  136.850894] kt_callback -- Doing working (4294926432)
+[  138.866667] kt_callback -- Doing working (4294926936)
+# rmmod kthread_simple.ko 
+[  144.515812] kt: exit
+[  144.914943] kt_callback -- END
 ```
 
 ## kthread (advanced)
@@ -772,17 +781,15 @@ An example of how to use work queue.
 - [work_queue_simple.c](work_queue_simple.c)
 
 ```bash
-# insmod work_queue_simple.ko
-[16189.731808] wq: init
-[16189.732197] Create work queue...
-[16189.742714] Create work to be done...
-[16189.743025] Queue a work...
-[16189.743399] wq_work_handler -- START
-[16189.743596] wq_work_handler -- Doing working
-[16189.743901] wq: init -- end
-# [16215.442424] wq_work_handler -- END
-# rmmod work_queue_simple.ko
-[16822.548017] wq: exit
+# insmod work_queue_simple.ko 
+[  260.216729] wq: init
+[  260.218188] Create work queue...
+[  260.223238] Create work to be done...
+[  260.223870] Queue a work...
+[  260.225050] wq_work_handler -- START
+[  260.226280] wq_work_handler -- Doing working
+[  260.227277] wq: init -- end
+# [  270.354834] wq_work_handler -- END
 #
 ```
 
@@ -791,20 +798,20 @@ An example of how to use work queue with delayed functionality.
 - [work_queue_delayed.c](work_queue_delayed.c)
 
 ```bash
-# insmod work_queue_delayed.ko
-[ 6649.250160] wq: init
-[ 6649.250957] Create work queue...
-[ 6649.253994] Create work to be done...
-[ 6649.254922] Queue a work...
-[ 6649.255207] Current time: 4296554471 jiffies
-[ 6649.255641] wq: init -- end
-# [ 6659.457128] wq_work_handler -- START [4296557021 jiffies]
-[ 6659.461149] wq_work_handler -- Doing working
-[ 6669.584246] wq_work_handler -- END
-
-# rmmod work_queue_delayed.ko
-[ 6680.596487] wq: exit
+# insmod work_queue_delayed.ko 
+[  383.526096] wq: init
+[  383.526796] Create work queue...
+[  383.531937] Create work to be done...
+[  383.532559] Queue a work...
+[  383.533017] Current time: 4294988102 jiffies
+[  383.534545] wq: init -- end
+# [  393.747500] wq_work_handler -- START [4294990656 jiffies]
+[  393.748829] wq_work_handler -- Doing working
+[  403.986202] wq_work_handler -- END
 #
+# rmmod work_queue_delayed.ko 
+[  437.676556] wq: exit
+# 
 ```
 
 # License
