@@ -16,6 +16,7 @@ PWD ?= $(shell pwd)
 
 # obj-m := lock_mutex.o
 # obj-m := lock_spin_lock.o
+obj-m := lock_rw_spin_lock.o
 # obj-m := lock_semaphore.o
 # obj-m := lock_rw_semaphore.o
 
@@ -26,7 +27,7 @@ PWD ?= $(shell pwd)
 # obj-m := sysfs_dynamic.o
 
 # obj-m := timer.o
-obj-m := timer_repetitive.o
+# obj-m := timer_repetitive.o
 # obj-m := timer_hr.o
 # obj-m := timer_hr_repetitive.o
 

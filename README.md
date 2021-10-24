@@ -15,6 +15,7 @@
 - [Locking](#locking)
     - [mutex](#mutex)
     - [spinlock](#spinlock)
+    - [spinlock (rw)](#spinlock-rw)
     - [semaphore](#semaphore)
     - [rw-semaphore](#rw-semaphore)
 - [Character device](#character-device)
@@ -441,6 +442,156 @@ rmmod [ 7479.408382] lockmod_read_callback  -- Doing working (16)
 [ 7482.699630] lockmod_write_callback -- END
 [ 7483.438937] lockmod_read_callback -- END
 #
+```
+
+## spinlock (rw)
+An example of how to use spin lock (read-write).
+- [lock_rw_spin_lock.c](lock_rw_spin_lock.c)
+
+```bash
+# insmod work_queue_delayed.ko 
+[  383.526096] wq: init
+[  383.526796] Create work queue...
+[  383.531937] Create work to be done...
+[  383.532559] Queue a work...
+[  383.533017] Current time: 4294988102 jiffies
+[  383.534545] wq: init -- end
+# [  393.747500] wq_work_handler -- START [4294990656 jiffies]
+[  393.748829] wq_work_handler -- Doing working
+[  403.986202] wq_work_handler -- END
+[ 1122.622695] mod: init
+[ 1122.623535] Setup rw spin lock...
+[ 1122.624134] Setup kthread (reader # 1)...
+[ 1122.628617] Setup kthread (reader # 2)...
+[ 1122.632624] Setup kthread (writer)...
+[ 1122.638801] Start kthreads...
+[ 1122.639733]  - Read task # 1: # 1
+[ 1122.640412] mod_read_callback (303 -- read_thread_1) -- START
+[ 1122.640837]  - Read task # 2: # 1
+[ 1122.642603]  - Write task: # 1
+[ 1122.646566] mod_write_callback (305 -- write_thread) -- START
+[ 1122.647524] mod_write_callback (305 -- write_thread) -- work (0)
+[ 1122.648230] mod_read_callback (303 -- read_thread_1) -- work (1)
+[ 1122.655702] mod_read_callback (304 -- read_thread_2) -- START
+[ 1122.656453] mod_read_callback (304 -- read_thread_2) -- work (1)
+# [ 1124.659235] mod_read_callback (303 -- read_thread_1) -- work (1)
+[ 1124.691121] mod_read_callback (304 -- read_thread_2) -- work (1)
+[ 1125.907277] mod_write_callback (305 -- write_thread) -- work (1)
+[ 1126.675390] mod_read_callback (303 -- read_thread_1) -- work (2)
+[ 1126.706486] mod_read_callback (304 -- read_thread_2) -- work (2)
+[ 1128.691254] mod_read_callback (303 -- read_thread_1) -- work (2)
+[ 1128.723350] mod_read_callback (304 -- read_thread_2) -- work (2)
+[ 1128.979217] mod_write_callback (305 -- write_thread) -- work (2)
+[ 1130.706340] mod_read_callback (303 -- read_thread_1) -- work (3)
+[ 1130.739037] mod_read_callback (304 -- read_thread_2) -- work (3)
+[ 1132.051443] mod_write_callback (305 -- write_thread) -- work (3)
+[ 1132.723584] mod_read_callback (303 -- read_thread_1) -- work (4)
+[ 1132.755438] mod_read_callback (304 -- read_thread_2) -- work (4)
+[ 1134.739379] mod_read_callback (303 -- read_thread_1) -- work (4)
+[ 1134.771130] mod_read_callback (304 -- read_thread_2) -- work (4)
+[ 1135.123221] mod_write_callback (305 -- write_thread) -- work (4)
+[ 1136.755387] mod_read_callback (303 -- read_thread_1) -- work (5)
+[ 1136.787345] mod_read_callback (304 -- read_thread_2) -- work (5)
+[ 1138.195593] mod_write_callback (305 -- write_thread) -- work (5)
+[ 1138.771092] mod_read_callback (303 -- read_thread_1) -- work (6)
+[ 1138.803358] mod_read_callback (304 -- read_thread_2) -- work (6)
+[ 1140.787087] mod_read_callback (303 -- read_thread_1) -- work (6)
+[ 1140.818852] mod_read_callback (304 -- read_thread_2) -- work (6)
+[ 1141.267785] mod_write_callback (305 -- write_thread) -- work (6)
+[ 1142.803494] mod_read_callback (303 -- read_thread_1) -- work (7)
+[ 1142.835191] mod_read_callback (304 -- read_thread_2) -- work (7)
+[ 1144.339339] mod_write_callback (305 -- write_thread) -- work (7)
+[ 1144.819012] mod_read_callback (303 -- read_thread_1) -- work (8)
+[ 1144.851463] mod_read_callback (304 -- read_thread_2) -- work (8)
+[ 1146.835101] mod_read_callback (303 -- read_thread_1) -- work (8)
+[ 1146.867705] mod_read_callback (304 -- read_thread_2) -- work (8)
+[ 1147.411098] mod_write_callback (305 -- write_thread) -- work (8)
+[ 1148.851240] mod_read_callback (303 -- read_thread_1) -- work (9)
+[ 1148.883354] mod_read_callback (304 -- read_thread_2) -- work (9)
+[ 1150.482390] mod_write_callback (305 -- write_thread) -- work (9)
+[ 1150.867061] mod_read_callback (303 -- read_thread_1) -- work (10)
+[ 1150.900246] mod_read_callback (304 -- read_thread_2) -- work (10)
+[ 1152.883940] mod_read_callback (303 -- read_thread_1) -- work (10)
+[ 1152.914355] mod_read_callback (304 -- read_thread_2) -- work (10)
+[ 1153.555129] mod_write_callback (305 -- write_thread) -- work (10)
+[ 1154.898720] mod_read_callback (303 -- read_thread_1) -- work (11)
+[ 1154.930397] mod_read_callback (304 -- read_thread_2) -- work (11)
+[ 1156.626261] mod_write_callback (305 -- write_thread) -- work (11)
+[ 1156.914287] mod_read_callback (303 -- read_thread_1) -- work (12)
+[ 1156.946528] mod_read_callback (304 -- read_thread_2) -- work (12)
+[ 1158.930489] mod_read_callback (303 -- read_thread_1) -- work (12)
+[ 1158.962590] mod_read_callback (304 -- read_thread_2) -- work (12)
+[ 1159.698262] mod_write_callback (305 -- write_thread) -- work (12)
+[ 1160.946304] mod_read_callback (303 -- read_thread_1) -- work (13)
+[ 1160.978864] mod_read_callback (304 -- read_thread_2) -- work (13)
+[ 1162.771398] mod_write_callback (305 -- write_thread) -- work (13)
+[ 1162.963236] mod_read_callback (303 -- read_thread_1) -- work (14)
+[ 1162.995347] mod_read_callback (304 -- read_thread_2) -- work (14)
+[ 1164.979136] mod_read_callback (303 -- read_thread_1) -- work (14)
+[ 1165.010747] mod_read_callback (304 -- read_thread_2) -- work (14)
+[ 1165.843107] mod_write_callback (305 -- write_thread) -- work (14)
+[ 1166.995087] mod_read_callback (303 -- read_thread_1) -- work (15)
+[ 1167.027714] mod_read_callback (304 -- read_thread_2) -- work (15)
+[ 1168.915048] mod_write_callback (305 -- write_thread) -- work (15)
+[ 1169.011015] mod_read_callback (303 -- read_thread_1) -- work (16)
+[ 1169.042119] mod_read_callback (304 -- read_thread_2) -- work (16)
+[ 1171.027261] mod_read_callback (303 -- read_thread_1) -- work (16)
+[ 1171.058477] mod_read_callback (304 -- read_thread_2) -- work (16)
+[ 1171.986270] mod_write_callback (305 -- write_thread) -- work (16)
+[ 1173.042936] mod_read_callback (303 -- read_thread_1) -- work (17)
+[ 1173.074994] mod_read_callback (304 -- read_thread_2) -- work (17)
+[ 1175.059197] mod_write_callback (305 -- write_thread) -- work (17)
+[ 1175.060853] mod_read_callback (303 -- read_thread_1) -- work (18)
+[ 1175.090941] mod_read_callback (304 -- read_thread_2) -- work (18)
+[ 1177.075010] mod_read_callback (303 -- read_thread_1) -- work (18)
+[ 1177.106830] mod_read_callback (304 -- read_thread_2) -- work (18)
+[ 1178.131275] mod_write_callback (305 -- write_thread) -- work (18)
+[ 1179.090251] mod_read_callback (303 -- read_thread_1) -- work (19)
+[ 1179.122431] mod_read_callback (304 -- read_thread_2) -- work (19)
+[ 1181.106962] mod_read_callback (303 -- read_thread_1) -- work (19)
+[ 1181.139426] mod_read_callback (304 -- read_thread_2) -- work (19)
+[ 1181.202363] mod_write_callback (305 -- write_thread) -- work (19)
+[ 1183.123117] mod_read_callback (303 -- read_thread_1) -- work (20)
+[ 1183.155462] mod_read_callback (304 -- read_thread_2) -- work (20)
+[ 1184.274816] mod_write_callback (305 -- write_thread) -- work (20)
+[ 1185.139375] mod_read_callback (303 -- read_thread_1) -- work (21)
+[ 1185.171043] mod_read_callback (304 -- read_thread_2) -- work (21)
+[ 1187.155243] mod_read_callback (303 -- read_thread_1) -- work (21)
+[ 1187.186446] mod_read_callback (304 -- read_thread_2) -- work (21)
+[ 1187.346256] mod_write_callback (305 -- write_thread) -- work (21)
+[ 1189.170666] mod_read_callback (303 -- read_thread_1) -- work (22)
+[ 1189.202692] mod_read_callback (304 -- read_thread_2) -- work (22)
+[ 1190.418493] mod_write_callback (305 -- write_thread) -- work (22)
+[ 1191.187600] mod_read_callback (303 -- read_thread_1) -- work (23)
+[ 1191.218366] mod_read_callback (304 -- read_thread_2) -- work (23)
+[ 1193.203578] mod_read_callback (303 -- read_thread_1) -- work (23)
+[ 1193.235053] mod_read_callback (304 -- read_thread_2) -- work (23)
+[ 1193.491090] mod_write_callback (305 -- write_thread) -- work (23)
+[ 1195.218313] mod_read_callback (303 -- read_thread_1) -- work (24)
+[ 1195.250251] mod_read_callback (304 -- read_thread_2) -- work (24)
+[ 1196.562204] mod_write_callback (305 -- write_thread) -- work (24)
+[ 1197.235065] mod_read_callback (303 -- read_thread_1) -- work (25)
+[ 1197.266784] mod_read_callback (304 -- read_thread_2) -- work (25)
+[ 1199.251309] mod_read_callback (303 -- read_thread_1) -- work (25)
+[ 1199.283093] mod_read_callback (304 -- read_thread_2) -- work (25)
+[ 1199.634915] mod_write_callback (305 -- write_thread) -- work (25)
+[ 1201.267111] mod_read_callback (303 -- read_thread_1) -- work (26)
+[ 1201.299612] mod_read_callback (304 -- read_thread_2) -- work (26)
+[ 1202.707106] mod_write_callback (305 -- write_thread) -- work (26)
+[ 1203.283423] mod_read_callback (303 -- read_thread_1) -- work (27)
+[ 1203.315179] mod_read_callback (304 -- read_thread_2) -- work (27)
+[ 1205.298347] mod_read_callback (303 -- read_thread_1) -- work (27)
+[ 1205.330450] mod_read_callback (304 -- read_thread_2) -- work (27)
+[ 1205.778296] mod_write_callback (305 -- write_thread) -- work (27)
+
+# rmmod lock_rw_spin_lock.ko
+[ 1212.399056] mod: exit
+[ 1213.363848] mod_read_callback (303 -- read_thread_1) -- work (30)
+[ 1213.395388] mod_read_callback (304 -- read_thread_2) -- work (30)
+[ 1214.995148] mod_write_callback (305 -- write_thread) -- END
+[ 1215.379341] mod_read_callback (303 -- read_thread_1) -- END
+[ 1215.403062] mod_read_callback (304 -- read_thread_2) -- END
+# 
 ```
 
 ## semaphore
