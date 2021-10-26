@@ -16,6 +16,7 @@
     - [mutex](#mutex)
     - [spinlock](#spinlock)
     - [spinlock (rw)](#spinlock-rw)
+    - [seqlock](#seqlock)
     - [semaphore](#semaphore)
     - [rw-semaphore](#rw-semaphore)
 - [Character device](#character-device)
@@ -591,6 +592,48 @@ An example of how to use spin lock (read-write).
 [ 1214.995148] mod_write_callback (305 -- write_thread) -- END
 [ 1215.379341] mod_read_callback (303 -- read_thread_1) -- END
 [ 1215.403062] mod_read_callback (304 -- read_thread_2) -- END
+# 
+```
+
+## seqlock
+An example of how to use seqlock
+- [lock_seqlock.c](lock_seqlock.c)
+
+```bash
+# insmod lock_seqlock.ko 
+[   87.134555] lock_seqlock: loading out-of-tree module taints kernel.
+[   87.160044] mod: init
+[   87.160790] Setup seqlock...
+[   87.161277] Setup kthread (reader # 1)...
+[   87.165792] Setup kthread (reader # 2)...
+[   87.171028] Setup kthread (writer)...
+[   87.176910] Start kthreads...
+[   87.177554]  - Read task # 1: # 1
+[   87.178116]  - Read task # 2: # 1
+[   87.178886]  - Write task: # 1
+[   87.180041] mod_read_callback (245 -- read_thread_1) -- START
+[   87.181998] mod_read_callback (245 -- read_thread_1) -- work (0)
+[   87.192545] mod_write_callback (247 -- write_thread) -- START
+[   87.193637] mod_write_callback (247 -- write_thread) -- work (0)
+[   87.193818] mod_read_callback (246 -- read_thread_2) -- START
+[   87.195780] mod_read_callback (246 -- read_thread_2) -- work (1)
+[   89.226355] mod_read_callback (246 -- read_thread_2) -- work (1)
+[   90.281699] mod_write_callback (247 -- write_thread) -- work (1)
+[   91.208917] mod_read_callback (245 -- read_thread_1) -- work (2)
+[   91.241296] mod_read_callback (246 -- read_thread_2) -- work (2)
+[   91.577222] cfg80211: failed to load regulatory.db
+[   93.224758] mod_read_callback (245 -- read_thread_1) -- work (2)
+[   93.257374] mod_read_callback (246 -- read_thread_2) -- work (2)
+[   93.352562] mod_write_callback (247 -- write_thread) -- work (2)
+[   95.240752] mod_read_callback (245 -- read_thread_1) -- work (3)
+[   95.273404] mod_read_callback (246 -- read_thread_2) -- work (3)
+# rmmod lock_seqlock.ko 
+[   99.197795] mod: exit
+[   99.272362] mod_read_callback (245 -- read_thread_1) -- work (4)
+[   99.304272] mod_read_callback (246 -- read_thread_2) -- work (4)
+[   99.434230] mod_write_callback (247 -- write_thread) -- END
+[  101.289220] mod_read_callback (245 -- read_thread_1) -- END
+[  101.313045] mod_read_callback (246 -- read_thread_2) -- END
 # 
 ```
 

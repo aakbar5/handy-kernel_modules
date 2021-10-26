@@ -16,7 +16,8 @@ PWD ?= $(shell pwd)
 
 # obj-m := lock_mutex.o
 # obj-m := lock_spin_lock.o
-obj-m := lock_rw_spin_lock.o
+# obj-m := lock_rw_spin_lock.o
+obj-m := lock_seqlock.o
 # obj-m := lock_semaphore.o
 # obj-m := lock_rw_semaphore.o
 
