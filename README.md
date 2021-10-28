@@ -10,6 +10,7 @@
     - [container_of](#container_of)
     - [Linked list](#linked-list)
     - [List process](#list-process)
+    - [Per-CPU Variables](#per-cpu-variables)
     - [kthread (simple)](#kthread-simple)
     - [kthread (advanced)](#kthread-advanced)
 - [Locking](#locking)
@@ -302,6 +303,35 @@ An example of usage of `for_each_process`.
 [37230.392163] proinfo_module: exit
 ```
 
+## Per-CPU Variables
+An example of how to use Per-CPU variable.
+- [per_cpu_vars.c](per_cpu_vars.c)
+
+```bash
+# insmod per_cpu_vars.ko
+[  488.653524] mod: init
+[  488.654033] smp_processor_id: 0
+[  488.654445] num_online_cpus: 2
+[  488.655747] --- Variable (var_static) before modification
+[  488.656645]   cpu # 0 <> 0
+[  488.657235]   cpu # 1 <> 0
+[  488.657795] --- Variable (var_dynamic) before modification
+[  488.658462]   cpu # 0 <> 0
+[  488.659018]   cpu # 1 <> 0
+[  488.660225]
+[  488.660225] ============================================
+[  488.660871] --- Variable (var_static) after modification
+[  488.661543]   cpu # 0 <> 786
+[  488.662023]   cpu # 1 <> 0
+[  488.662493] --- Variable (var_dynamic) before modification
+[  488.663776]   cpu # 0 <> 3
+[  488.664198]   cpu # 1 <> 0
+#
+# rmmod per_cpu_vars.ko
+[  498.671965] mod: exit
+#
+```
+
 ## kthread (simple)
 An example of how to use kthread.
 - [kthread_simple.c](kthread_simple.c)
@@ -328,7 +358,7 @@ An example of how to use kthread.
 [  134.834881] kt_callback -- Doing working (4294925928)
 [  136.850894] kt_callback -- Doing working (4294926432)
 [  138.866667] kt_callback -- Doing working (4294926936)
-# rmmod kthread_simple.ko 
+# rmmod kthread_simple.ko
 [  144.515812] kt: exit
 [  144.914943] kt_callback -- END
 ```
@@ -450,7 +480,7 @@ An example of how to use spin lock (read-write).
 - [lock_rw_spin_lock.c](lock_rw_spin_lock.c)
 
 ```bash
-# insmod work_queue_delayed.ko 
+# insmod work_queue_delayed.ko
 [  383.526096] wq: init
 [  383.526796] Create work queue...
 [  383.531937] Create work to be done...
@@ -592,7 +622,7 @@ An example of how to use spin lock (read-write).
 [ 1214.995148] mod_write_callback (305 -- write_thread) -- END
 [ 1215.379341] mod_read_callback (303 -- read_thread_1) -- END
 [ 1215.403062] mod_read_callback (304 -- read_thread_2) -- END
-# 
+#
 ```
 
 ## seqlock
@@ -600,7 +630,7 @@ An example of how to use seqlock
 - [lock_seqlock.c](lock_seqlock.c)
 
 ```bash
-# insmod lock_seqlock.ko 
+# insmod lock_seqlock.ko
 [   87.134555] lock_seqlock: loading out-of-tree module taints kernel.
 [   87.160044] mod: init
 [   87.160790] Setup seqlock...
@@ -627,14 +657,14 @@ An example of how to use seqlock
 [   93.352562] mod_write_callback (247 -- write_thread) -- work (2)
 [   95.240752] mod_read_callback (245 -- read_thread_1) -- work (3)
 [   95.273404] mod_read_callback (246 -- read_thread_2) -- work (3)
-# rmmod lock_seqlock.ko 
+# rmmod lock_seqlock.ko
 [   99.197795] mod: exit
 [   99.272362] mod_read_callback (245 -- read_thread_1) -- work (4)
 [   99.304272] mod_read_callback (246 -- read_thread_2) -- work (4)
 [   99.434230] mod_write_callback (247 -- write_thread) -- END
 [  101.289220] mod_read_callback (245 -- read_thread_1) -- END
 [  101.313045] mod_read_callback (246 -- read_thread_2) -- END
-# 
+#
 ```
 
 ## semaphore
@@ -975,7 +1005,7 @@ An example of how to use work queue.
 - [work_queue_simple.c](work_queue_simple.c)
 
 ```bash
-# insmod work_queue_simple.ko 
+# insmod work_queue_simple.ko
 [  260.216729] wq: init
 [  260.218188] Create work queue...
 [  260.223238] Create work to be done...
@@ -992,7 +1022,7 @@ An example of how to use work queue with delayed functionality.
 - [work_queue_delayed.c](work_queue_delayed.c)
 
 ```bash
-# insmod work_queue_delayed.ko 
+# insmod work_queue_delayed.ko
 [  383.526096] wq: init
 [  383.526796] Create work queue...
 [  383.531937] Create work to be done...
@@ -1003,9 +1033,9 @@ An example of how to use work queue with delayed functionality.
 [  393.748829] wq_work_handler -- Doing working
 [  403.986202] wq_work_handler -- END
 #
-# rmmod work_queue_delayed.ko 
+# rmmod work_queue_delayed.ko
 [  437.676556] wq: exit
-# 
+#
 ```
 
 # License

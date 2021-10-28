@@ -17,7 +17,7 @@ PWD ?= $(shell pwd)
 # obj-m := lock_mutex.o
 # obj-m := lock_spin_lock.o
 # obj-m := lock_rw_spin_lock.o
-obj-m := lock_seqlock.o
+# obj-m := lock_seqlock.o
 # obj-m := lock_semaphore.o
 # obj-m := lock_rw_semaphore.o
 
@@ -36,6 +36,8 @@ obj-m := lock_seqlock.o
 # obj-m := wait_queue.o
 # obj-m := work_queue_simple.o
 # obj-m := work_queue_delayed.o
+
+obj-m := per_cpu_vars.o
 
 .PHONY: all default
 all default:
