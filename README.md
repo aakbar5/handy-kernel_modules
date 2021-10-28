@@ -13,6 +13,7 @@
     - [Per-CPU Variables](#per-cpu-variables)
     - [kthread (simple)](#kthread-simple)
     - [kthread (advanced)](#kthread-advanced)
+    - [Notification chain](#notification-chain)
 - [Locking](#locking)
     - [mutex](#mutex)
     - [spinlock](#spinlock)
@@ -413,6 +414,37 @@ An example of kthread which can put in different states using device interface.
 # echo "4" > /dev/chdev
 # echo "4" > /dev/chdev
 # echo "2" > /dev/chdev
+```
+
+## Notification chain
+An example of how to create/use notification chain.
+- [notify_chain_consumer.c](notify_chain_consumer.c)
+- [notify_chain_publisher.c](notify_chain_publisher.c)
+
+```bash
+# ls
+notify_chain_consumer.ko  notify_chain_publisher.ko
+# insmod notify_chain_publisher.ko
+[ 7210.060161] Notify chain publisher: init
+# insmod notify_chain_consumer.ko
+[ 7215.046885] Notify chain consumer: init
+# [ 7215.460016] Notify chain consumer: notification # 0x83
+[ 7215.972452] Notify chain consumer: notification # 0x82
+[ 7216.484327] Notify chain consumer: notification # 0x83
+[ 7216.996201] Notify chain consumer: notification # 0x82
+[ 7217.508260] Notify chain consumer: notification # 0x83
+[ 7218.020057] Notify chain consumer: notification # 0x82
+[ 7218.531963] Notify chain consumer: notification # 0x83
+[ 7219.044564] Notify chain consumer: notification # 0x82
+[ 7219.556412] Notify chain consumer: notification # 0x83
+[ 7220.068214] Notify chain consumer: notification # 0x82
+[ 7220.580056] Notify chain consumer: notification # 0x83
+[ 7221.092416] Notify chain consumer: notification # 0x82
+[ 7221.604269] Notify chain consumer: notification # 0x83
+#
+# rmmod notify_chain_*.ko
+[ 7231.289578] Notify chain consumer: exit
+#
 ```
 
 
