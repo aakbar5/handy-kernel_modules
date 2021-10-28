@@ -38,6 +38,7 @@
     - [Work queue](#work-queue)
         - [Simple](#simple-3)
         - [Delayed](#delayed)
+        - [Shared](#shared)
 - [License](#license)
 
 <!-- /TOC -->
@@ -1106,6 +1107,25 @@ An example of how to use work queue with delayed functionality.
 #
 # rmmod work_queue_delayed.ko
 [  437.676556] wq: exit
+#
+```
+
+### Shared
+An example of how to use shared worked.
+- [work_queue_shared.c](work_queue_shared.c)
+
+```bash
+# insmod work_queue_shared.ko
+[  130.313221] wq: init
+[  130.313868] Create work queue...
+[  130.315272] Create work to be done...
+[  130.315996] Queue a work...
+[  130.317034] wq_work_handler -- START
+[  130.317669] wq_work_handler -- Doing working
+[  130.319163] wq: init -- end
+# [  140.537463] wq_work_handler -- END
+# rmmod work_queue_shared.ko
+[  734.248972] wq: exit
 #
 ```
 
