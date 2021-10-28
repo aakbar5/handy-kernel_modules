@@ -59,6 +59,8 @@ static int __init wq_init(void) {
     // which won't be visible by default. To enable sysfs interface you need to use
     // alloc_workqueue("wq_test",__WQ_LEGACY | WQ_MEM_RECLAIM | WQ_SYSFS, 1)
     //
+    // create_singlethread_workqueue will create an ordere workqueue which can
+    // work for only one work item at any given time.
 
     // Initialize work
     pr_info("Create work to be done...\n");

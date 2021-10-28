@@ -1049,6 +1049,45 @@ An example of how to use work queue.
 #
 ```
 
+- ps before having workqueue
+```bash
+# ps -ef | grep kworker
+    5 root     [kworker/0:0-mm_]
+    6 root     [kworker/0:0H-ev]
+    7 root     [kworker/u4:0-ev]
+   17 root     [kworker/1:0-mm_]
+   18 root     [kworker/1:0H-kb]
+   21 root     [kworker/1:1-mm_]
+   22 root     [kworker/0:1-mm_]
+   61 root     [kworker/u4:1-fl]
+   62 root     [kworker/0:1H-kb]
+   64 root     [kworker/u5:0]
+   98 root     [kworker/1:1H-kb]
+  172 root     [kworker/u4:2-ev]
+  178 root     [kworker/1:2-mm_]
+  243 root     grep kworker
+```
+
+- After having module which installed workqueue
+```bash
+# ps -ef | grep kworker
+    5 root     [kworker/0:0-mm_]
+    6 root     [kworker/0:0H-ev]
+    7 root     [kworker/u4:0-ev]
+   17 root     [kworker/1:0-mm_]
+   18 root     [kworker/1:0H-kb]
+   21 root     [kworker/1:1-mm_]
+   22 root     [kworker/0:1-eve]
+   61 root     [kworker/u4:1-ev]
+   62 root     [kworker/0:1H-kb]
+   64 root     [kworker/u5:0]
+   98 root     [kworker/1:1H-kb]
+  172 root     [kworker/u4:2-ev]
+  178 root     [kworker/1:2-mm_]
+  244 root     [kworker/0:2+wq_] <---
+  254 root     grep kworker
+```
+
 ### Delayed
 An example of how to use work queue with delayed functionality.
 - [work_queue_delayed.c](work_queue_delayed.c)
