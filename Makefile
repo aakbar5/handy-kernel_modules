@@ -36,10 +36,11 @@ PWD ?= $(shell pwd)
 # obj-m := wait_queue.o
 # obj-m := work_queue_simple.o
 # obj-m := work_queue_delayed.o
+obj-m := work_queue_shared.o
 
 # obj-m := per_cpu_vars.o
 
-obj-m := notify_chain_publisher.o notify_chain_consumer.o
+# obj-m := notify_chain_publisher.o notify_chain_consumer.o
 
 .PHONY: all default
 all default:
