@@ -25,6 +25,7 @@ PWD ?= $(shell pwd)
 # obj-m := char_device_fops.o
 
 # obj-m := sysfs_simple.o
+obj-m := sysfs_pollable.o
 # obj-m := sysfs_dynamic.o
 
 # obj-m := timer.o
@@ -36,7 +37,7 @@ PWD ?= $(shell pwd)
 # obj-m := wait_queue.o
 # obj-m := work_queue_simple.o
 # obj-m := work_queue_delayed.o
-obj-m := work_queue_shared.o
+# obj-m := work_queue_shared.o
 
 # obj-m := per_cpu_vars.o
 

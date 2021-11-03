@@ -11,7 +11,6 @@
 const static char* module_name = "test";
 
 struct ms_module {
-    struct device *device;
     struct kobject *kobj;
 } g_module;
 
@@ -54,7 +53,7 @@ static struct attribute_group k_grp = {
 static int __init ms_init(void) {
     int ret;
 
-    pr_info("cd: init\n");
+    pr_info("ms: init\n");
 
     /* Create entry in sysfs (/sys/<module_name>) */
     g_module.kobj = kobject_create_and_add(module_name, kernel_kobj->parent);
