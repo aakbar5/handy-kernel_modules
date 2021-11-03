@@ -44,7 +44,7 @@ static int __init ms_init(void) {
     int ret;
     int idx;
 
-    pr_info("cd: init\n");
+    pr_info("ms: init\n");
 
     /* Setup logic */
     for (idx = 0; idx < LENGTH; ++idx) {

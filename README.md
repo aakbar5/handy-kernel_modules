@@ -823,7 +823,7 @@ A kernel module with sysfs interface for static data.
 
 ```bash
 # insmod sysfs_simple.ko
-[ 2667.802727] cd: init
+[ 2667.802727] ms: init
 [ 2667.804341] Sysfs interface # /sys/test/root
 # ls -l /sys/test/root/
 total 0
@@ -843,13 +843,72 @@ total 0
 #
 ```
 
+## Pollable
+A kernel module with sysfs interface for static data. Also
+supports notification for select and poll APIs.
+
+It is two parts:
+ - Kernel side
+    Module to expose data via sysfs.
+    - [sysfs_pollable.c](sysfs_pollable.c)
+
+ - User side
+    App to be used in user space to poll sysfs interface.
+    - [sysfs_pollable_user_poll.c](sysfs_pollable_user_poll.c)
+
+    To compile app:
+    `aarch64-none-linux-gnu-gcc -o app_poll sysfs_pollable_user_poll.c`
+
+    To upload to qemu
+    `scp -P 2222 app_poll root@localhost:/root`
+
+```bash
+# ls
+app_poll sysfs_pollable.ko
+#
+# insmod sysfs_pollable.ko
+[ 2667.802727] cd: init
+[ 2667.804341] Sysfs interface # /sys/test/root
+# ls -l /sys/test/root/
+total 0
+-r--r--r-- 1 root root 4096 Jul 12 00:12 readonly
+-rw-r--r-- 1 root root 4096 Jul 12 00:12 readwrite
+# cat /sys/test/root/readonly
+100
+# cat /sys/test/root/readwrite
+0
+# echo 202 > /sys/test/root/readonly
+-sh: can't create /sys/test/root/readonly: Permission denied
+#
+# echo 202 > /sys/test/root/readwrite
+[ 2990.228589] readwrite = 202
+# cat /sys/test/root/readwrite
+202
+```
+- Run user space application
+```bash
+# ./app_poll &
+# Going to poll....
+# echo 204 > /sys/test/root/readwrite
+[ 1591.077334] store -> readwrite = 204
+Polling is triggered
+# buf: 0xD3505360, 204
+```
+
+- To remove module
+```bash
+# rmmod sysfs_pollable
+#
+```
+
+
 ## Dynamic
 A kernel module with sysfs interface for dynamic data.
 - [sysfs_dynamic.c](sysfs_dynamic.c)
 
 ```bash
 # insmod sysfs_dynamic.ko
-[ 3710.192276] cd: init
+[ 3710.192276] ms: init
 [ 3710.194922] Sysfs interface # /sys/test/root
 # ls -l /sys/test/root/
 total 0

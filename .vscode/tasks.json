@@ -140,7 +140,7 @@
             },
             "args": [
                 "-P 2222",
-                "helloworld.ko",
+                "*.ko",
                 "root@localhost:/root"
             ],
             "group": {

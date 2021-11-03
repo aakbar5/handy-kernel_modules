@@ -1,4 +1,4 @@
-// Kernel module to create sysfs for static data
+// Kernel module to create sysfs pollable
 
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -29,7 +29,10 @@ static ssize_t readwrite_show(struct kobject *kobj, struct kobj_attribute *attr,
 
 static ssize_t readwrite_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
     sscanf(buf, "%du", &readwrite);
-    pr_info("readwrite = %d\n", readwrite);
+    pr_info("store -> %s = %d\n", attr->attr.name, readwrite);
+    
+    /* root is the attribute_group k_grp name */
+    sysfs_notify(kobj, "root", attr->attr.name);
     return count;
 }
 
