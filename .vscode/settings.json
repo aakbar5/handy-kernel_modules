@@ -1,4 +1,9 @@
 {
+    "chat.agent.enabled": false,
+    "chat.commandCenter.enabled": false,
+    "editor.mouseWheelZoom": true,
+    "telemetry.feedback.enabled": false,
+    "C_Cpp.errorSquiggles": "disabled",
     "taskButtons.buttons": [
         {
             "task": "Run QEMU",
@@ -17,12 +22,6 @@
         "**/.*.*.cmd": true,
         "**/.*.d": true,
         "**/.*.S": true
-    },
-    "[c]": {
-        // "editor.detectIndentation": false,
-        // "editor.tabSize": 8,
-        // "editor.insertSpaces": false,
-        // "editor.rulers": [80]
     },
     "files.associations": {
         "*.ipp": "cpp",
@@ -126,6 +125,5 @@
         "irqflags.h": "c",
         "fs.h": "c",
         "delay.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "Disabled"
+    }
 }

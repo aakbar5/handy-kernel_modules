@@ -4,9 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/ws/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/lib/gcc/aarch64-none-linux-gnu/10.3.1/include",
-                "/ws/linux-5.10.72/arch/arm64/include/**",
-                "/ws/linux-5.10.72/include/**"
+                "/ws/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu/lib/gcc/aarch64-none-linux-gnu/14.2.1/include",
+                "/ws/buildroot/output/build/linux-custom/arch/arm64/include/**",
+                "/ws/buildroot/output/build/linux-custom/include/**"
             ],
             "defines": [
                 "__GNUC__",
@@ -15,15 +15,15 @@
                 "KBUILD_BASENAME='\"xor_neon.mod\"'",
                 "KBUILD_MODNAME='\"xor_neon\"'"
             ],
-            "compilerPath": "/ws/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-gcc",
+            "compilerPath": "/ws/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-gcc",
             "cStandard": "c11",
             "intelliSenseMode": "linux-gcc-arm64",
             "browse": {
                 "path": [
                     "${workspaceFolder}/**",
-                    "/ws/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/lib/gcc/aarch64-none-linux-gnu/10.3.1/include",
-                    "/ws/linux-5.10.72/arch/arm64/include/**",
-                    "/ws/linux-5.10.72/include/**"
+                    "/ws/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu/lib/gcc/aarch64-none-linux-gnu/14.2.1/include",
+                    "/ws/buildroot/output/build/linux-custom/arch/arm64/include/**",
+                    "/ws/buildroot/output/build/linux-custom/include/**"
                 ]
             }
         }

@@ -1,44 +1,42 @@
-<!-- TOC -->
+<!-- TOC depthto:2 -->
 
 - [Info](#info)
 - [Setup](#setup)
 - [Kernel module](#kernel-module)
     - [Simple](#simple)
-    - [Parameter](#parameter)
+    - [Parameter Default & User defined](#parameter-default--user-defined)
     - [Probe](#probe)
 - [General DS](#general-ds)
     - [container_of](#container_of)
     - [Linked list](#linked-list)
     - [List process](#list-process)
     - [Per-CPU Variables](#per-cpu-variables)
-    - [kthread (simple)](#kthread-simple)
-    - [kthread (advanced)](#kthread-advanced)
+    - [kthread simple](#kthread-simple)
+    - [kthread advanced](#kthread-advanced)
     - [Notification chain](#notification-chain)
 - [Locking](#locking)
     - [mutex](#mutex)
     - [spinlock](#spinlock)
-    - [spinlock (rw)](#spinlock-rw)
+    - [spinlock rw](#spinlock-rw)
     - [seqlock](#seqlock)
     - [semaphore](#semaphore)
     - [rw-semaphore](#rw-semaphore)
 - [Character device](#character-device)
-    - [Simple](#simple-1)
+    - [Simple](#simple)
     - [With File I/O](#with-file-io)
 - [Sysfs](#sysfs)
-    - [Simple](#simple-2)
+    - [Simple](#simple)
+    - [Pollable](#pollable)
     - [Dynamic](#dynamic)
 - [Timer](#timer)
-    - [Simple timer (one shot)](#simple-timer-one-shot)
-    - [Simple timer (Repetitive)](#simple-timer-repetitive)
-    - [hr-timer (one shot)](#hr-timer-one-shot)
-    - [hr-timer (Repetitive)](#hr-timer-repetitive)
+    - [Simple timer one shot](#simple-timer-one-shot)
+    - [Simple timer Repetitive](#simple-timer-repetitive)
+    - [hr-timer one shot](#hr-timer-one-shot)
+    - [hr-timer Repetitive](#hr-timer-repetitive)
 - [Worker](#worker)
     - [Tasklet](#tasklet)
     - [Wait Queue](#wait-queue)
     - [Work queue](#work-queue)
-        - [Simple](#simple-3)
-        - [Delayed](#delayed)
-        - [Shared](#shared)
 - [License](#license)
 
 <!-- /TOC -->
@@ -46,21 +44,28 @@
 # Info
 It contains Linux kernel modules.
 
-- Buildroot: `2021.08.1`
-- Kernel: `linux-5.10.72`
-- Compiler: `gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu`
-- Qemu: `v6.1.0` (`aarch64-softmmu @ cortex-a57`)
+- Buildroot: `2025.05`
+- Kernel: `6.15.2`
+- Compiler: `arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu`
+- Qemu: `10.0.2` (`aarch64-softmmu @ cortex-a57`)
 
 # Setup
 - How to do setup of workspace, follow [this](https://asadmalik5.wordpress.com/2020/02/15/linux-kernel-vs-code/).
 
 ![kernel_in_vscode](.devcontainer/kernel_in_vscode.gif)
 
-- For Docker
+- To build Docker image
 ```bash
 cd /path/to/repo/.devcontainer
-docker build --tag aarch64-qemu:latest .
-docker run -it aarch64-qemu:latest /bin/bash
+
+# Download sources
+./download_sources.sh
+
+# Issue Docker build command
+docker build --tag aarch64-qemu:24.04 .
+
+# Incase you want to interact with Docker image
+docker run -it aarch64-qemu:24.04 /bin/bash
 ```
 
 # Kernel module
@@ -77,7 +82,7 @@ Simple kernel module
 #
 ```
 
-## Parameter
+## Parameter (Default & User defined)
 A kernel module which can accept parameters.
 - [helloworld_param.c](helloworld_param.c)
 

@@ -1,8 +1,9 @@
 # !/bin/bash
 
-export WORKSPACE="/ws"
+export WORKSPACE="/ws/"
 export QEMU_HOME="${WORKSPACE}/qemu"
-export LINUX_HOME="${WORKSPACE}/linux-5.10.72"
+export BUILD_ROOT_HOME="${WORKSPACE}/buildroot"
+export BUILD_ROOT_OUTPUT="${BUILD_ROOT_HOME}/output/images"
 export ARCH=arm64
 export CROSS_COMPILE=aarch64-none-linux-gnu-
 
@@ -14,8 +15,8 @@ ${QEMU_HOME}/qemu-system-aarch64 \
   -smp 2 \
   -m 3072 \
   -L ${QEMU_HOME} \
-  -drive format=raw,file=${QEMU_HOME}/rootfs.ext3 \
-  -kernel ${LINUX_HOME}/arch/arm64/boot/Image \
+  -drive format=raw,file=${BUILD_ROOT_OUTPUT}/rootfs.ext3 \
+  -kernel ${BUILD_ROOT_OUTPUT}/Image \
   -append "console=ttyAMA0 root=/dev/vda oops=panic panic_on_warn=1 panic=-1 ftrace_dump_on_oops=orig_cpu debug earlyprintk=serial slub_debug=UZ ip=dhcp" \
   -nic user,hostfwd=tcp::2222-:22
 

@@ -1,9 +1,9 @@
-KERNELSRC ?= /ws/linux-5.10.72
+KERNELSRC ?= /ws/buildroot/output/build/linux-custom
 ARCH ?= arm64
 CROSS_COMPILE ?= aarch64-none-linux-gnu-
 PWD ?= $(shell pwd)
 
-# obj-m := helloworld.o
+obj-m := helloworld.o
 # obj-m := helloworld_probe.o
 # obj-m := helloworld_param.o
 # obj-m := proc_info.o
@@ -25,7 +25,7 @@ PWD ?= $(shell pwd)
 # obj-m := char_device_fops.o
 
 # obj-m := sysfs_simple.o
-obj-m := sysfs_pollable.o
+# obj-m := sysfs_pollable.o
 # obj-m := sysfs_dynamic.o
 
 # obj-m := timer.o
