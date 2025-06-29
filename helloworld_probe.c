@@ -1,8 +1,10 @@
-#include <linux/kernel.h>
+// repo: asadmalik5/handy-kernel_modules.git
+
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
-#include <linux/platform_device.h>
 #include <linux/of_platform.h>
+#include <linux/platform_device.h>
 
 //
 // Module entry point

@@ -1,7 +1,8 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // An example of percpu variables
 
-#include <linux/kernel.h>
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
 
 #include <linux/cpu.h>
@@ -31,18 +32,18 @@ static int __init mod_init(void) {
     pr_info("--- Variable (var_static) before modification\n");
     for_each_possible_cpu(cpu) {
         uint tmp = per_cpu(var_static, cpu);
-		pr_info("  cpu # %d <> %d\n", cpu, tmp);
-	}
+        pr_info("  cpu # %d <> %d\n", cpu, tmp);
+    }
 
     pr_info("--- Variable (var_dynamic) before modification\n");
     for_each_possible_cpu(cpu) {
         uint tmp = *per_cpu_ptr(var_dynamic, cpu);
-		pr_info("  cpu # %d <> %d\n", cpu, tmp);
-	}
+        pr_info("  cpu # %d <> %d\n", cpu, tmp);
+    }
 
     // Update variable for only current cpu
-	get_cpu_var(var_static) = 786;
-	put_cpu_var(var_static);
+    get_cpu_var(var_static) = 786;
+    put_cpu_var(var_static);
 
     this_cpu_inc(*var_dynamic);
     this_cpu_inc(*var_dynamic);
@@ -52,14 +53,14 @@ static int __init mod_init(void) {
     pr_info("--- Variable (var_static) after modification\n");
     for_each_possible_cpu(cpu) {
         uint tmp = per_cpu(var_static, cpu);
-		pr_info("  cpu # %d <> %d\n", cpu, tmp);
-	}
+        pr_info("  cpu # %d <> %d\n", cpu, tmp);
+    }
 
     pr_info("--- Variable (var_dynamic) before modification\n");
     for_each_possible_cpu(cpu) {
         uint tmp = *per_cpu_ptr(var_dynamic, cpu);
-		pr_info("  cpu # %d <> %d\n", cpu, tmp);
-	}
+        pr_info("  cpu # %d <> %d\n", cpu, tmp);
+    }
 
     return 0;
 }

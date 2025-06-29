@@ -1,12 +1,13 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // Create a character device with file ops
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
 #include <linux/cdev.h>
 #include <linux/device.h>
-#include <linux/slab.h>
 #include <linux/fs.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/slab.h>
 #include <linux/uaccess.h>
 
 const size_t data_limit = 1024 * 2;
@@ -112,7 +113,7 @@ static ssize_t cd_write(struct file *filep, const char __user *buf, size_t count
     }
 
     pr_info("cd: write (%ld)\n", ipos);
-    
+
     if (ipos > data_limit)
         return -EINVAL;
 

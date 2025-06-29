@@ -1,12 +1,13 @@
-// An example of kernel thread 
+// repo: asadmalik5/handy-kernel_modules.git
+// An example of kernel thread
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/slab.h>
 #include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/kthread.h>
+#include <linux/module.h>
 #include <linux/sched.h>
+#include <linux/slab.h>
 
 // Structure having module related data
 struct kt_info {
@@ -25,7 +26,7 @@ static int kt_callback(void *data) {
         pr_info("kt_callback -- Doing working (%lld)\n", jiffies_64);
         msleep_interruptible(info->msecs);
     }
-    
+
     pr_info("kt_callback -- END\n");
     return 0;
 }
@@ -35,7 +36,7 @@ static int kt_callback(void *data) {
 //
 static int __init kt_init(void) {
     int ret;
-    
+
     pr_info("kt: init\n");
 
     g_kt_info = kmalloc(sizeof(struct kt_info), GFP_KERNEL);
@@ -64,7 +65,7 @@ static int __init kt_init(void) {
 err_free_mem:
     kfree(g_kt_info);
     g_kt_info = NULL;
-    return ret;    
+    return ret;
 }
 
 //

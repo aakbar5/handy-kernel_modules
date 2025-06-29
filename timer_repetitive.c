@@ -1,11 +1,11 @@
-// An example of timer
-// A repetitive timer
+// repo: asadmalik5/handy-kernel_modules.git
+// An example of timer - a repetitive timer
 
-#include <linux/kernel.h>
+#include <linux/delay.h>
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/slab.h>
-#include <linux/delay.h>
 #include <linux/timer.h>
 
 // Structure having module related data

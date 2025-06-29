@@ -1,14 +1,15 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // An example of wait_queue
 // A recurring timer is called which  sets
 // the wait_queue condition after sometimes.
 // Once wait_queue is signalled, delete the
 // timer.
 
-#include <linux/kernel.h>
+#include <linux/delay.h>
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/slab.h>
-#include <linux/delay.h>
 #include <linux/timer.h>
 
 // Sleep time (mseconds)

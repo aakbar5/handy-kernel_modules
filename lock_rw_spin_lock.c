@@ -1,14 +1,15 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // An example of spin lock (rw)
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/slab.h>
 #include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/kthread.h>
-#include <linux/sched.h>
-#include <linux/spinlock.h>
 #include <linux/list.h>
+#include <linux/module.h>
+#include <linux/sched.h>
+#include <linux/slab.h>
+#include <linux/spinlock.h>
 
 // Structure having module related data
 struct mod_info {

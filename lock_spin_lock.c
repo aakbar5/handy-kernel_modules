@@ -1,12 +1,13 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // An example of spin lock
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/slab.h>
 #include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/kthread.h>
+#include <linux/module.h>
 #include <linux/sched.h>
+#include <linux/slab.h>
 #include <linux/spinlock.h>
 
 // Structure having module related data
@@ -31,7 +32,7 @@ static int lockmod_read_callback(void *data) {
         spin_lock(&info->lock);
         {
             pr_info("lockmod_read_callback  -- Doing working (%lld)\n", g_lockmod_info->variable);
-            
+
             // NOTE: spin lock disable preemption so can't call sleep
             // msleep_interruptible(info->msecs_read);
         }
@@ -54,7 +55,7 @@ static int lockmod_write_callback(void *data) {
         {
             ++g_lockmod_info->variable;
             // pr_info("lockmod_write_callback -- Doing working (%lld)\n", g_lockmod_info->variable);
-            
+
             // NOTE: spin lock disable preemption so can't call sleep
             // msleep_interruptible(info->msecs_write);
         }

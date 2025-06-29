@@ -1,12 +1,13 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // An example of seqlock
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/slab.h>
 #include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/kthread.h>
+#include <linux/module.h>
 #include <linux/seqlock.h>
+#include <linux/slab.h>
 
 // Structure having module related data
 struct mod_info {

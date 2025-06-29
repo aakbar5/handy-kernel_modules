@@ -1,13 +1,14 @@
+// repo: asadmalik5/handy-kernel_modules.git
 // An example of rw semaphore
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/slab.h>
 #include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/kthread.h>
-#include <linux/sched.h>
+#include <linux/module.h>
 #include <linux/rwsem.h>
+#include <linux/sched.h>
+#include <linux/slab.h>
 
 // Structure having module related data
 struct lockmod_info {

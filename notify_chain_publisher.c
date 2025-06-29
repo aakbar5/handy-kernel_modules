@@ -1,5 +1,7 @@
-#include <linux/kernel.h>
+// repo: asadmalik5/handy-kernel_modules.git
+
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/notifier.h>
 #include <linux/timer.h>
@@ -22,13 +24,13 @@ static struct timer_list nc_timer;
 // Expose APIs to register/unregister notify chain consumers
 int register_sample_notifier(struct notifier_block *nb)
 {
-	return atomic_notifier_chain_register(&nc_notifier, nb);
+    return atomic_notifier_chain_register(&nc_notifier, nb);
 }
 EXPORT_SYMBOL_GPL(register_sample_notifier);
 
 int unregister_sample_notifier(struct notifier_block *nb)
 {
-	return atomic_notifier_chain_unregister(&nc_notifier, nb);
+    return atomic_notifier_chain_unregister(&nc_notifier, nb);
 }
 EXPORT_SYMBOL_GPL(unregister_sample_notifier);
 

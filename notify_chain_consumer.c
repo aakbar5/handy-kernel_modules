@@ -1,5 +1,7 @@
-#include <linux/kernel.h>
+// repo: asadmalik5/handy-kernel_modules.git
+
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/notifier.h>
 
@@ -13,7 +15,7 @@ static int notification_callback(struct notifier_block *nb, unsigned long action
     pr_info("Notify chain consumer: notification # 0x%lx\n", action);
     return NOTIFY_OK;
 }
-static struct notifier_block notifier = 
+static struct notifier_block notifier =
 {
     .notifier_call = notification_callback,
     .priority = 0,
@@ -28,12 +30,12 @@ static int __init nc_consumer_init(void) {
     pr_info("Notify chain consumer: init\n");
 
     // Register for notification
-	err = register_sample_notifier(&notifier);
-	if (err)
-	{
-		pr_err("Notify chain consumer: failed to register notify chain\n");
-		return -1;
-	}
+    err = register_sample_notifier(&notifier);
+    if (err)
+    {
+        pr_err("Notify chain consumer: failed to register notify chain\n");
+        return -1;
+    }
 
     return 0;
 }

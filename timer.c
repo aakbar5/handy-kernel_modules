@@ -1,11 +1,11 @@
-// An example of timer
-// A simple one shot timer
+// repo: asadmalik5/handy-kernel_modules.git
+// An example of timer - simple one shot timer
 
-#include <linux/kernel.h>
+#include <linux/delay.h>
 #include <linux/init.h>
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/slab.h>
-#include <linux/delay.h>
 #include <linux/timer.h>
 
 // Structure having module related data
