@@ -3,7 +3,7 @@ ARCH ?= arm64
 CROSS_COMPILE ?= aarch64-none-linux-gnu-
 PWD ?= $(shell pwd)
 
-obj-m := helloworld.o
+# obj-m := helloworld.o
 # obj-m := helloworld_probe.o
 # obj-m := helloworld_param.o
 # obj-m := proc_info.o
@@ -42,6 +42,8 @@ obj-m := helloworld.o
 # obj-m := per_cpu_vars.o
 
 # obj-m := notify_chain_publisher.o notify_chain_consumer.o
+
+obj-m := power_integration.o
 
 .PHONY: all default
 all default:

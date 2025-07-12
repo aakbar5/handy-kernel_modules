@@ -6,6 +6,7 @@
     - [Simple](#simple)
     - [Parameter Default & User defined](#parameter-default--user-defined)
     - [Probe](#probe)
+    - [Power managements hooks](#power-managements-hooks)
 - [General DS](#general-ds)
     - [container_of](#container_of)
     - [Linked list](#linked-list)
@@ -126,6 +127,74 @@ A kernel module which can accept parameters.
 ## Probe
 A kernel module with probe and remove by having entry in DTS file.
 - [helloworld_probe.c](helloworld_probe.c)
+
+## Power managements hooks
+A kernel module to hooks into the power management.
+- [power_integration.c](power_integration.c)
+- This module creates a device `/sys/devices/platform/pi_device` which informs kernel to pass on PM events.
+
+- Check available power states:
+```bash
+# cat /sys/power/state
+freeze mem disk
+```
+
+- Check current state for `mem_sleep`
+```bash
+# cat /sys/power/mem_sleep
+[s2idle]
+```
+
+- `mem_sleep` can accept following values: `s2idle`, `shallow`, `deep`, `platform`
+
+- Insert module
+```bash
+# insmod power_integration.ko 
+[   86.934913] power_integration: loading out-of-tree module taints kernel.
+[   86.962170] pi_module: init
+[   86.975712] pi_module @ pi_probe
+[   86.978183] Platform device 'pi_device' registered
+# 
+```
+
+- Emulate the PM on QEMU
+```bash
+# Setup wake alarm so that our device can recover itself from power down state
+# Set mem_sleep to shallow state
+# Set power state to mem
+echo +10 > /sys/class/rtc/rtc0/wakealarm; echo shallow > /sys/power/mem_sleep; echo mem > /sys/power/state
+```
+
+- Wait for sometime to get back the control on the console, 
+```bash
+# dmesg
+[   86.962170] pi_module: init
+[   86.975712] pi_module @ pi_probe
+[   86.978183] Platform device 'pi_device' registered
+[  174.735378] PM: suspend entry (s2idle)
+[  174.755502] Filesystems sync: 0.018 seconds
+[  174.805709] Freezing user space processes
+[  174.825676] Freezing user space processes completed (elapsed 0.019 seconds)
+[  174.826747] OOM killer disabled.
+[  174.827164] Freezing remaining freezable tasks
+[  174.841576] Freezing remaining freezable tasks completed (elapsed 0.014 seconds)
+[  174.842692] printk: Suspending console(s) (use no_console_suspend to debug)
+[  174.859404] pi_module @ pi_pm_prepare
+[  174.862924] pi_module @ pi_pm_suspend
+[  174.925833] PM: suspend devices took 0.072 seconds
+[  174.927440] pi_module @ pi_pm_suspend_late
+[  174.940981] pi_module @ pi_pm_suspend_noirq
+[  184.748852] pi_module @ pi_pm_resume_noirq
+[  184.763089] pi_module @ pi_pm_resume_early
+[  184.774270] virtio_blk virtio1: 2/0/0 default/read/poll queues
+[  184.785146] pi_module @ pi_pm_resume
+[  184.806821] pi_module @ pi_pm_complete
+[  184.810551] PM: resume devices took 0.048 seconds
+[  184.839690] OOM killer enabled.
+[  184.840606] Restarting tasks ... done.
+[  184.860556] random: crng reseeded on system resumption
+[  184.865016] PM: suspend exit
+```
 
 # General DS
 ## container_of
