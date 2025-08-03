@@ -17,48 +17,6 @@
             }
         },
         {
-            "label": "Generate kernel compile_commands.json",
-            "detail": "Generate compile_commands.json for kernel",
-            "type": "process",
-            "command": "python",
-            "options": {
-                "statusbar": {
-                    "hide": true
-                },
-                "cwd": "/ws/linux-5.10.72"
-            },
-            "args": [
-                "/ws/linux-5.10.72/scripts/clang-tools/gen_compile_commands.py",
-                "-d",
-                "/ws/linux-5.10.72",
-                "-o",
-                "${workspaceRoot}/.vscode/compile_commands.json",
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Generate project compile_commands.json",
-            "detail": "Generate compile_commands.json for project",
-            "type": "process",
-            "command": "python",
-            "options": {
-                "statusbar": {
-                    "hide": true
-                },
-                "cwd": "${workspaceRoot}"
-            },
-            "dependsOn": [
-                "Generate kernel compile_commands.json"
-            ],
-            "args": [
-                "${workspaceRoot}/.vscode/generate_compdb.py",
-                "-o",
-                "${workspaceRoot}/.vscode",
-                "-a",
-            ],
-            "problemMatcher": []
-        },
-        {
             "label": "Run QEMU",
             "detail": "Run QEMU",
             "type": "shell",
@@ -127,7 +85,7 @@
             },
             "problemMatcher": "$gcc"
         },
-        {
+{
             "label": "kmod - load",
             "detail": "Load kernel module in qemu",
             "type": "shell",
@@ -140,6 +98,8 @@
             },
             "args": [
                 "-P 2222",
+                "-o StrictHostKeyChecking=no",
+                "-o UserKnownHostsFile=/dev/null",
                 "*.ko",
                 "root@localhost:/root"
             ],
