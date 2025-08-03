@@ -43,7 +43,9 @@ PWD ?= $(shell pwd)
 
 # obj-m := notify_chain_publisher.o notify_chain_consumer.o
 
-obj-m := power_integration.o
+# obj-m := power_integration.o
+
+obj-m := proc_fs.o
 
 .PHONY: all default
 all default:

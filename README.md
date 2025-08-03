@@ -29,6 +29,8 @@
     - [Simple](#simple)
     - [Pollable](#pollable)
     - [Dynamic](#dynamic)
+- [ProcFs](#procfs)
+    - [Simple](#simple)
 - [Timer](#timer)
     - [Simple timer one shot](#simple-timer-one-shot)
     - [Simple timer Repetitive](#simple-timer-repetitive)
@@ -1010,6 +1012,29 @@ total 0
 400
 # rmmod sysfs_dynamic.ko
 [ 3777.702655] ms: exit
+#
+```
+
+# ProcFs
+## Simple
+A kernel module does set up device entry in proc fs.
+- [proc_fs.c](proc_fs.c)
+
+```bash
+# insmod proc_fs.ko 
+[ 2666.940557] pfs: init
+[ 2666.941089] /proc/pfs/node created
+# echo "test" > /proc/pfs/node 
+[ 2675.305186] pfs: open
+[ 2675.319083] User passed data: {test
+[ 2675.319083] }(len=5)
+# cat /proc/pfs/node 
+[ 2684.525822] pfs: open
+[ 2684.528809] pfs: read
+procfs is saying hello
+[ 2684.530803] pfs: read
+# rmmod proc_fs.ko 
+[ 2701.341219] pfs: exit
 #
 ```
 
